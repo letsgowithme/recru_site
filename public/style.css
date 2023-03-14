@@ -1,0 +1,49 @@
+
+
+body {
+  flex-direction: column;
+  display: flex;
+  min-height: 100vh;
+  justify-content: space-between;
+  width: 100%;
+  /* background-color: rgb(73, 89, 93); */
+}
+
+h1,
+/* th {
+  color: white;
+  font-family: "Libre Baskerville", serif;
+} */
+
+h2,
+h3,
+h4,
+h5 {
+  color: rgb(45, 44, 44);
+  font-family: "Libre Baskerville", serif;
+}
+
+p,
+li {
+  font-family: "Karla", sans-serif;
+  color: rgb(99, 97, 97);
+}
+.recipe__image {
+  width: 300px;
+  height: auto;
+}
+
+.btn {
+  color: white;
+  background-color: rgb(43, 72, 79);
+}
+.navbar {
+  background-color: rgb(7, 106, 103);
+}
+
+.dropdown-menu {
+  background-color: rgb(49, 181, 176);
+}
+.dropdown-item:hover {
+  background-color: rgb(35, 190, 190);
+}
