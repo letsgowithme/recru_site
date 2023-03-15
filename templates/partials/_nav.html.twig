@@ -11,9 +11,16 @@
 						<span class="visually-hidden">(current)</span>
 					</a>
 				</li>
+				{% if app.user %}
 				<li class="nav-item">
-					<a class="nav-link fs-5 fw-bold" href="{{ path('job.index') }}">Offres d'emploi</a>
+						<a class="nav-link fs-5 fw-bold" href="{{ path('job.index') }}">Mes offres d'emploi</a>
+					
 				</li>
+				{% else %}
+				<li class="nav-item">
+			<a class="nav-link fs-5 fw-bold" href="{{ path('job.all') }}">Offres d'emploi</a>
+				</li>
+				{% endif %}
 				{# {% if is_granted('ROLE_ADMIN') %}
 					<li class="nav-item lg-ms-5">
 						<a class="nav-link fs-5 fw-bold" href="{{ path('job.all') }}">
@@ -32,10 +39,13 @@
 			{% if not app.user %}
 			<ul class="navbar-nav me-1 d-lg-flex align-items-lg-end">
 				<li class="nav-item me-2 fs-5 fw-bold lg-ms-4">
-					<a class="nav-link" href="/login">Connexion</a>
+					<a class="nav-link" href="{{ path('app_login')}}">Connexion</a>
+				</li>
+				<li class="nav-item me-2 fs-5 fw-bold lg-ms-4">
+					{# <a class="nav-link" href="{{ path('user.new')}}">Pré-inscription</a> #}
 				</li>
 				<li class="nav-item me-4 fs-5 fw-bold">
-					<a class="nav-link" href="/registration">Inscription</a>
+					<a class="nav-link" href="{{ path('app_register')}}">Inscription</a>
 				</li>
 			</ul>
 			{% endif %}
@@ -45,17 +55,18 @@
 		<ul class="navbar-nav me-auto">
 			{% if app.user %}
 				<li class="nav-item dropdown" style="margin-right: 5rem;">
-					<a class="nav-link dropdown-toggle fs-5 fw-bold" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="color: white;">{{ app.user.firstname }} {{ app.user.lastname }}</a>
-					<div class="dropdown-menu">
+					<a class="nav-link dropdown-toggle fs-5 fw-bold" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="color: white;">{{ app.user.firstname }} {{ app.user.lastname }} {{ app.user.email }}</a>
+					<div class="dropdown-menu" style="margin-left: 5%;">
 						{% if 'ROLE_ADMIN' in app.user.roles %}
-							<a class="dropdown-item  fw-bold" href="/admin">Tableau de bord</a>
+							<a class="dropdown-item fw-bold" href="/admin">Tableau de bord</a>
+							<div class="dropdown-divider"></div>
 						{% endif %}
+						<a class="dropdown-item fw-bold" href="{{ path('user.edit', {id : app.user.id}) }}">Modifier le profil</a>
 						<div class="dropdown-divider"></div>
-						{# <a class="dropdown-item fw-bold" href="{{ path('security.logout') }}">Déconnextion</a> #}
+						<a class="dropdown-item fw-bold" href="{{ path('app_logout')}}">Déconnexion</a>
 										{% endif %}
+											</div>
 				</li>
-			</div>
-		</li>
 	</ul>
 </div>
 </div></nav> 

@@ -12,10 +12,21 @@ security:
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
+            user_checker: App\Security\UserChecker
             security: false
         main:
             lazy: true
             provider: app_user_provider
+            custom_authenticator: App\Security\LoginAuthenticator
+            logout:
+                path: app_logout
+                # where to redirect after logout
+                # target: app_any_route
+            # form_login:
+                # login_path: security.login
+                # check_path: security.login
+            
+          
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -25,9 +36,18 @@ security:
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
+    role_hierarchy:
+        ROLE_CAND:  ROLE_USER
+        ROLE_RECR:  ROLE_USER
+        ROLE_CONS:  [ROLE_CAND, ROLE_RECR, ROLE_USER]
+        ROLE_ADMIN:   [ROLE_CONS, ROLE_CAND, ROLE_RECR, ROLE_USER]
+
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/admin, role: ROLE_ADMIN }
+        - { path: ^/consultant, role: ROLE_CONS }
+        - { path: ^/candidat, role: ROLE_CAND }
+        - { path: ^/recruteur, role: ROLE_RECR}
+
 
 when@test:
     security:

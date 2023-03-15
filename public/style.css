@@ -28,12 +28,8 @@ li {
   font-family: "Karla", sans-serif;
   color: rgb(99, 97, 97);
 }
-.recipe__image {
-  width: 300px;
-  height: auto;
-}
 
-.btn {
+/* .btn {
   color: white;
   background-color: rgb(43, 72, 79);
 }
@@ -46,4 +42,7 @@ li {
 }
 .dropdown-item:hover {
   background-color: rgb(35, 190, 190);
-}
+} */
+/* .show {
+  margin-right: 20%
+} */
