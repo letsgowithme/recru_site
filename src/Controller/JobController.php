@@ -14,7 +14,11 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('/job')]
 class JobController extends AbstractController
 {
-    #[IsGranted('ROLE_USER')]
+    /**
+     * Show all the recipes for everybody
+     * @param JobRepository $jobRepository
+     * @return Response
+     */
     #[Route('/', name: 'job.all', methods: ['GET'])]
     public function index(JobRepository $jobRepository): Response
     {
@@ -22,16 +26,29 @@ class JobController extends AbstractController
             'jobs' => $jobRepository->findAll(),
         ]);
     }
-
-    #[Route('/', name: 'job.index', methods: ['GET'])]
+     /**
+     * Show the jobs if user is connected
+     * @param JobRepository $jobRepository
+     * @return Response
+     */
+   
+    #[Route('/index', name: 'job.index', methods: ['GET'])]
+    #[IsGranted('ROLE_USER')]
     public function all(JobRepository $jobRepository): Response
     {
+        $jobs = $jobRepository->findAll();
         return $this->render('job/index.html.twig', [
-            'jobs' => $jobRepository->findAll(),
+            'jobs' => $jobs,
         ]);
     }
-
-
+    
+ /**
+     * This function creates a job
+     * @param Job $job
+     * @param Request $request
+     * @return Response
+     */
+    #[IsGranted('ROLE_RECRUITER')]
     #[Route('/new', name: 'job.new', methods: ['GET', 'POST'])]
     public function new(Request $request, JobRepository $jobRepository): Response
     {
@@ -50,7 +67,12 @@ class JobController extends AbstractController
             'form' => $form,
         ]);
     }
-
+/**
+     * Show the job detail of a user
+     * @param Job $job
+     * @param Request $request
+     * @return Response
+     */
     #[Route('/{id}', name: 'job.show', methods: ['GET'])]
     public function show(Job $job): Response
     {
@@ -59,6 +81,13 @@ class JobController extends AbstractController
         ]);
     }
 
+     /**
+     * This function edits the job
+     * @param Job $job
+     * @param Request $request
+     * @return Response
+     */
+    #[IsGranted('ROLE_RECRUITER')]
     #[Route('/{id}/edit', name: 'job.edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Job $job, JobRepository $jobRepository): Response
     {
@@ -77,6 +106,13 @@ class JobController extends AbstractController
         ]);
     }
 
+     /**
+     * This function deletes the job
+     * @param Job $job
+     * @param Request $request
+     * @return Response
+     */
+    #[IsGranted('ROLE_RECRUITER')]
     #[Route('/{id}', name: 'job.delete', methods: ['POST'])]
     public function delete(Request $request, Job $job, JobRepository $jobRepository): Response
     {

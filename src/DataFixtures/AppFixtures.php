@@ -29,7 +29,7 @@ class AppFixtures extends Fixture
         $admin = new User();
         $admin->setLastname('Administrateur')
                ->setEmail('admin@recru.fr')
-               ->setRoles(['ROLE_USER', 'ROLE_ADMIN'])
+               ->setRoles(['ROLE_ADMIN'])
                ->setPlainPassword('password');
             
                $users[] = $admin;
@@ -41,7 +41,7 @@ class AppFixtures extends Fixture
            $user->setLastname($this->faker->lastname())
            ->setFirstname($this->faker->firstname())
                ->setEmail($this->faker->email())
-               ->setRoles(['ROLE_USER'])
+               ->setRoles(mt_rand(0, 1) == 1 ? ['ROLE_CANDIDAT'] : ['ROLE_RECRUITER'])
                ->setPlainPassword('password');
             
                $users[] = $user;
@@ -58,7 +58,8 @@ class AppFixtures extends Fixture
                  ->setSalary(mt_rand(1, 1440))
                  ->setSchedule($this->faker->text(100))
                  ->setIsApproved(mt_rand(0, 1) == 1 ? true : false)
-                 ->setIsPublished(mt_rand(0, 1) == 1 ? true : false);
+                 ->setIsPublished(mt_rand(0, 1) == 1 ? true : false)
+                 ->setRecruiter($users[mt_rand(0, count($users) - 1)]);
                  for ($k = 0; $k < mt_rand(5, 5); $k++) {
                     $job->addUser($users[mt_rand(0, count($users) - 1)]);
                 }

@@ -2,13 +2,17 @@
 
 namespace App\Controller\Admin;
 
+
+use App\Entity\Job;
+use App\Entity\User;
+use App\Repository\JobRepository;
 use App\Repository\UserRepository;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
-use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
-use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
+use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class DashboardController extends AbstractDashboardController
 {
@@ -17,41 +21,31 @@ class DashboardController extends AbstractDashboardController
     public function index(): Response
     {
         return $this->render('admin/dashboard.html.twig');
-    
-
-        // Option 1. You can make your dashboard redirect to some common page of your backend
-        //
-        // $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
-        // return $this->redirect($adminUrlGenerator->setController(OneOfYourCrudController::class)->generateUrl());
-
-        // Option 2. You can make your dashboard redirect to different pages depending on the user
-        //
-        // if ('jane' === $this->getUser()->getUsername()) {
-        //     return $this->redirect('...');
-        // }
-
-        // Option 3. You can render some custom template to display a proper dashboard with widgets, etc.
-        // (tip: it's easier if your template extends from @EasyAdmin/page/content.html.twig)
-        //
-        // return $this->render('some/path/my-dashboard.html.twig');
     }
-    // #[IsGranted('ROLE_ADMIN')]
-    // #[Route('/user', name: 'user.new', methods: ['GET'])]
-    // public function createUser(UserRepository $userRepository): Response
-    // {
-    //    return $this->render('user/index.html.twig');
-       
-    // }
+    
+ #[IsGranted('ROLE_ADMIN')]
+ #[Route('/job', name: 'job.edit', methods: ['GET'])]
+ public function editJob(JobRepository $jobRepository): Response
+ {
+    return $this->render('job/edit.html.twig');
+    
+ }
 
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('Recru Site');
+            ->setTitle('Administration')
+            ->renderContentMaximized();
     }
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
+        yield MenuItem::linkToDashboard('Tableau de bord', 'fa fa-home');
+        yield MenuItem::linkToRoute('Voir le site', 'fas fa-list', 'home');
+        yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-user', User::class);
+        // yield MenuItem::linkToCrud('Demandes d\'inscription', 'fas fa-envelope', Contact::class);
+        // yield MenuItem::linkToCrud('Comments', 'fas fa-envelope', Comment::class);
+        yield MenuItem::linkToCrud('Annonces', 'fas fa-seedling', Job::class);
     }
+   
 }

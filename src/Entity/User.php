@@ -13,7 +13,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[ORM\EntityListeners(['App\EntityListener\UserListener'])]
+
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -51,7 +52,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private? bool $isVerified = false;
 
-    #[ORM\ManyToMany(targetEntity: Job::class, inversedBy: 'users')]
+    #[ORM\ManyToMany(targetEntity: Job::class)]
     private Collection $jobs;
 
     public function __construct()
@@ -241,26 +242,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+   
+
     /**
-     * @return Collection<int, Job>
-     */
-    public function getJobs(): Collection
+     * Get the value of jobs
+     */ 
+    public function getJobs()
     {
         return $this->jobs;
     }
 
-    public function addJob(Job $job): self
+    /**
+     * Set the value of jobs
+     *
+     * @return  self
+     */ 
+    public function setJobs($jobs)
     {
-        if (!$this->jobs->contains($job)) {
-            $this->jobs->add($job);
-        }
-
-        return $this;
-    }
-
-    public function removeJob(Job $job): self
-    {
-        $this->jobs->removeElement($job);
+        $this->jobs = $jobs;
 
         return $this;
     }

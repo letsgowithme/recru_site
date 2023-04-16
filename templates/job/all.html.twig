@@ -7,8 +7,6 @@
 		<h1>Offres d'emploi</h1>
 		<div
 			class="d-flex justify-content-center flex-wrap">
-			{# {% if app.user.jobs %}
-											{% for job in app.user.jobs %} #}
 			{% for job in jobs %}
 				<div class="card border-primary mb-3 me-3" style="width: 20rem;">
 					<div class="card-header">Offre numéro
@@ -27,7 +25,7 @@
 					</div>
 				</div>
 			{% endfor %}
-			{# {% endif %} #}
+			
 
 
 		</div>

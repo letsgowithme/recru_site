@@ -100,18 +100,18 @@ class UserType extends AbstractType
                 ]
             ])
 
-            ->add('isVerfied', CheckboxType::class, [
-                'attr' => [
-                    'class' => 'form-check-input mt-4 mb-4',
-                ],
-                'required' => false,
-                'label' => 'Demande vérifiée ? ',
-                'mapped' => false,
-                'label_attr' => [
-                    'class' => 'form-check-label mt-3 ms-3 text-dark fs-5'
-                ]
+            // ->add('isVerfied', CheckboxType::class, [
+            //     'attr' => [
+            //         'class' => 'form-check-input mt-4 mb-4',
+            //     ],
+            //     'required' => false,
+            //     'label' => 'Demande vérifiée ? ',
+            //     'mapped' => false,
+            //     'label_attr' => [
+            //         'class' => 'form-check-label mt-3 ms-3 text-dark fs-5'
+            //     ]
                
-            ])
+            // ])
             ->add('submit', SubmitType::class, [
                 'attr' => [
                     'class' => 'btn btn-primary mt-4'

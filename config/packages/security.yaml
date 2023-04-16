@@ -17,7 +17,10 @@ security:
         main:
             lazy: true
             provider: app_user_provider
-            custom_authenticator: App\Security\LoginAuthenticator
+            # custom_authenticator: App\Security\LoginAuthenticator
+            form_login:
+                login_path: security.login
+                check_path: security.login
             logout:
                 path: app_logout
                 # where to redirect after logout
@@ -36,17 +39,20 @@ security:
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
-    role_hierarchy:
-        ROLE_CAND:  ROLE_USER
-        ROLE_RECR:  ROLE_USER
-        ROLE_CONS:  [ROLE_CAND, ROLE_RECR, ROLE_USER]
-        ROLE_ADMIN:   [ROLE_CONS, ROLE_CAND, ROLE_RECR, ROLE_USER]
-
     access_control:
-        - { path: ^/admin, role: ROLE_ADMIN }
-        - { path: ^/consultant, role: ROLE_CONS }
-        - { path: ^/candidat, role: ROLE_CAND }
-        - { path: ^/recruteur, role: ROLE_RECR}
+        # - { path: ^/admin/users, role: ROLE_ADMIN }
+        # - { path: ^/admin, role: ROLE_CONSULTANT }
+      
+        - { path: ^/profil, role: ROLE_USER }
+        # - { path: ^/recruteur, role: ROLE_RECR}
+
+    role_hierarchy:
+        ROLE_CANDIDAT:  ROLE_USER
+        ROLE_RECRUITER:  ROLE_USER
+        ROLE_CONSULTANT:  [ROLE_CANDIDAT, ROLE_RECRUITER, ROLE_ADMIN]
+        ROLE_SUPER_ADMIN: ROLE_CONSULTANT
+
+    
 
 
 when@test:

@@ -28,6 +28,9 @@ li {
   font-family: "Karla", sans-serif;
   color: rgb(99, 97, 97);
 }
+.hidden {
+  display: none;
+}
 
 /* .btn {
   color: white;

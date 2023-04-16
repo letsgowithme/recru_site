@@ -41,24 +41,24 @@ class Job
 
     #[ORM\Column]
     private ?bool $isPublished = null;
-/**
- * Constructor
- */
-    #[ORM\Column]
-    private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'jobs')]
+    #[ORM\ManyToOne(inversedBy: 'jobs')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    private ?User $recruiter = null;
+
+    #[ORM\ManyToMany(targetEntity: User::class)]
     private Collection $users;
 
-   
-
-    
+    /**
+     * Constructor
+     */
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
 
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
-        $this->users = new ArrayCollection();
-       
+        // $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -138,7 +138,7 @@ class Job
         return $this;
     }
 
-    public function isIsApproved(): ?bool
+    public function isApproved(): ?bool
     {
         return $this->isApproved;
     }
@@ -150,12 +150,12 @@ class Job
         return $this;
     }
 
-    public function isisPublished(): ?bool
+    public function isPublished(): ?bool
     {
         return $this->isPublished;
     }
 
-    public function setisPublished(bool $isPublished): self
+    public function setIsPublished(bool $isPublished): self
     {
         $this->isPublished = $isPublished;
 
@@ -174,7 +174,14 @@ class Job
         return $this;
     }
 
-    /**
+   
+   
+    public function __toString()
+    {
+        return $this->title;
+    }
+
+   /**
      * @return Collection<int, User>
      */
     public function getUsers(): Collection
@@ -186,21 +193,8 @@ class Job
     {
         if (!$this->users->contains($user)) {
             $this->users->add($user);
-            $user->addJob($this);
         }
 
         return $this;
     }
-
-    public function removeUser(User $user): self
-    {
-        if ($this->users->removeElement($user)) {
-            $user->removeJob($this);
-        }
-
-        return $this;
-    }
-
-   
-    
 }
