@@ -12,7 +12,6 @@
 	 {% if is_granted("ROLE_CANDIDAT") %}
 		<h1 class="text-center text-light bg-primary mb-4" style="border-radius: 15px; padding: 10px 2px; width: auto; position: absolute; top: 15%; left: 50%; transform: translateX(-50%); padding: 10px;">Offres d'emploi pour {{ app.user.firstname }} {{ app.user.lastname }}</h1>
 		<div class="d-flex justify-content-center flex-wrap">
-    
 	{% endif %}
 	 
 			{% if app.user.jobs and app.user.isVerified is same as true %}
@@ -28,37 +27,20 @@
 							<p class="card-text">{{ job.description|slice(0, 100) ~ '...'  }}</p>
 							<h5 class="mt-3 ms-2 text-dark">Créé le:
 								{{ job.createdAt ? job.createdAt|date('Y-m-d') : '' }}</h5>
+								<p>Créée par {{ job.author}}</p>
+
+								{% if is_granted("ROLE_RECRUITER") %}
+								<ol>
+								{% for job.user in  job.users %}
+								<li>{{ user.lastname }} {{ user.firstname }} </li>
+								{% endfor %}
+								</ol>
+						{% endif %}
 						</div>
 					</div>
 				{% endfor %}
 			{% endif %}
-	{% endif %}
-	 {% if is_granted("ROLE_RECRUITER") %}
-		<h1 class="mb-4">Liste de candidats</h1>
-		
-		<table class="table mt-4">
-			<thead>
-				<tr>
-					<th>Nom</th>
-					<th>prenom</th>
-					{# <th>CV</th> #}
-				</tr>
-			</thead>
-			<tbody>
-				{% for user in users %}
-					<tr>
-						<td>{{ user.lastname }}</td>
-						<td>{{ user.firstname }}</td>
-						{# <td>{{ user.cv }}</td> #}
-					</tr>
-				{% else %}
-				{% endfor %}
-			</tbody>
-		</table>
-	</div>
 
-
-	{% endif %}
 		</div>
 	</div>
 {% endblock %}

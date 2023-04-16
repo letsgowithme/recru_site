@@ -42,12 +42,14 @@ class Job
     #[ORM\Column]
     private ?bool $isPublished = null;
 
-    #[ORM\ManyToOne(inversedBy: 'jobs')]
-    #[ORM\JoinColumn(onDelete: 'CASCADE')]
-    private ?User $recruiter = null;
 
     #[ORM\ManyToMany(targetEntity: User::class)]
-    private Collection $users;
+    private Collection $candidats;
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'jobs')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $author;
+
 
     /**
      * Constructor
@@ -55,10 +57,11 @@ class Job
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
-        // $this->users = new ArrayCollection();
+        $this->candidats = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -184,16 +187,37 @@ class Job
    /**
      * @return Collection<int, User>
      */
-    public function getUsers(): Collection
+    public function getCandidats(): Collection
     {
-        return $this->users;
+        return $this->candidats;
     }
 
-    public function addUser(User $user): self
+    public function addCandidat(User $candidat): self
     {
-        if (!$this->users->contains($user)) {
-            $this->users->add($user);
+        if (!$this->candidats->contains($candidat)) {
+            $this->candidats->add($candidat);
         }
+
+        return $this;
+    }
+
+
+    /**
+     * Get the value of author
+     */ 
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
+     * Set the value of author
+     *
+     * @return  self
+     */ 
+    public function setAuthor($author)
+    {
+        $this->author = $author;
 
         return $this;
     }

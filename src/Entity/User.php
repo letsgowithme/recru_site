@@ -31,6 +31,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $lastname = null;
 
+
     #[ORM\Column]
     private array $roles = [];
 
@@ -43,21 +44,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     // #[Assert\NotBlank()]
     private ?string $password = 'password';
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $company = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $location = null;
-
     #[ORM\Column]
     private? bool $isVerified = false;
 
     #[ORM\ManyToMany(targetEntity: Job::class)]
     private Collection $jobs;
 
+    #[ORM\OneToOne(targetEntity: Candidat::class, cascade: ['persist', 'remove'])]
+    private ?Candidat $candidat = null;
+
+    #[ORM\OneToOne(targetEntity: Recruiter::class, cascade: ['persist', 'remove'])]
+    private ?Recruiter $recruiter = null;
+
+    #[ORM\OneToOne(mappedBy: 'users', cascade: ['persist', 'remove'])]
+    private ?Consultant $consultant = null;
+
+    #[ORM\OneToMany(mappedBy: 'author', targetEntity: Job::class)]
+    private Collection $job_annonces;
+
+
     public function __construct()
     {
         $this->jobs = new ArrayCollection();
+        $this->job_annonces = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -78,16 +87,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
-    public function getUserIdentifier(): string
-    {
-        return (string) $this->email;
-    }
-
-     /**
      * Get the value of firstname
      */ 
     public function getFirstname()
@@ -125,6 +124,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->lastname = $lastname;
 
         return $this;
+    }
+      
+
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->lastname;
     }
 
     /**
@@ -190,45 +200,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    /**
-     * Get the value of company
-     */ 
-    public function getCompany()
-    {
-        return $this->company;
-    }
 
-    /**
-     * Set the value of company
-     *
-     * @return  self
-     */ 
-    public function setCompany($company)
-    {
-        $this->company = $company;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of location
-     */ 
-    public function getLocation()
-    {
-        return $this->location;
-    }
-
-    /**
-     * Set the value of location
-     *
-     * @return  self
-     */ 
-    public function setLocation($location)
-    {
-        $this->location = $location;
-
-        return $this;
-    }
 
     public function isVerified(): bool
     {
@@ -263,4 +235,94 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+    public function __toString()
+    {
+        return $this->lastname;
+    }
+
+    public function getCandidat(): ?Candidat
+    {
+        return $this->candidat;
+    }
+
+    public function setCandidat(Candidat $candidat): self
+    {
+        // set the owning side of the relation if necessary
+        if ($candidat->getUser() !== $this) {
+            $candidat->setUser($this);
+        }
+
+        $this->candidat = $candidat;
+
+        return $this;
+    }
+
+    public function getRecruiter(): ?Recruiter
+    {
+        return $this->recruiter;
+    }
+
+    public function setRecruiter(Recruiter $recruiter): self
+    {
+        // set the owning side of the relation if necessary
+        if ($recruiter->getUser() !== $this) {
+            $recruiter->setUser($this);
+        }
+
+        $this->recruiter = $recruiter;
+
+        return $this;
+    }
+
+    public function getConsultant(): ?Consultant
+    {
+        return $this->consultant;
+    }
+
+    public function setConsultant(Consultant $consultant): self
+    {
+        // set the owning side of the relation if necessary
+        if ($consultant->getUsers() !== $this) {
+            $consultant->setUsers($this);
+        }
+
+        $this->consultant = $consultant;
+
+        return $this;
+    }
+
+
+    /**
+     * @return Collection<int, Job>
+     */
+    public function getJobAnnonces(): Collection
+    {
+        return $this->job_annonces;
+    }
+
+    public function addJobAnnonce(Job $jobAnnonce): self
+    {
+        if (!$this->job_annonces->contains($jobAnnonce)) {
+            $this->job_annonces->add($jobAnnonce);
+            $jobAnnonce->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeJobAnnonce(Job $jobAnnonce): self
+    {
+        if ($this->job_annonces->removeElement($jobAnnonce)) {
+            // set the owning side to null (unless already changed)
+            if ($jobAnnonce->getAuthor() === $this) {
+                $jobAnnonce->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+
+    
 }

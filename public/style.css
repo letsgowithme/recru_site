@@ -8,13 +8,11 @@ body {
   width: 100%;
   /* background-color: rgb(73, 89, 93); */
 }
+.main-title {
+  font-size: 4em;;
+}
 
 h1,
-/* th {
-  color: white;
-  font-family: "Libre Baskerville", serif;
-} */
-
 h2,
 h3,
 h4,
@@ -34,14 +32,25 @@ li {
 .truc {
   transform: translateX(-50%);
 }
+.main-title {
+  position: absolute; 
+  top: 15%; 
+  left: 20%;
+}
 /* .name_link {
   margin-left: 130%;
   transform: translateX(-20%);
 } */
 
 }
-/* @media screen and (min-width: 768px) {
-  .name_link {
+ @media screen and (min-width: 768px) {
+  /*.name_link {
     margin-left: 35%;
     transform: translateX(-10%);
-  } */
+    */
+    .main-title {
+      position: absolute; 
+      top: 30%; 
+      left: 15%;
+    }
+  } 

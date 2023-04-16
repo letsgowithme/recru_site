@@ -2,7 +2,10 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Candidat;
+use App\Entity\Company;
 use App\Entity\Job;
+use App\Entity\Recruiter;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -47,6 +50,19 @@ class AppFixtures extends Fixture
                $users[] = $user;
            $manager->persist($user);
        }
+    //    $candidats = [];
+    //    for ($i = 0; $i < 5; $i++) {
+    //        $candidat = new Candidat();
+    //        for ($k = 0; $k < mt_rand(5, 5); $k++) {
+    //           $candidat->setUser($users[mt_rand(0, count($users) - 1)]);
+    //       }
+         
+
+    //       $candidats[] = $candidat;
+    //       $manager->persist($candidat);
+    //   }
+
+
          //Jobs
          $jobs = [];
          for ($i = 0; $i < 5; $i++) {
@@ -58,16 +74,41 @@ class AppFixtures extends Fixture
                  ->setSalary(mt_rand(1, 1440))
                  ->setSchedule($this->faker->text(100))
                  ->setIsApproved(mt_rand(0, 1) == 1 ? true : false)
-                 ->setIsPublished(mt_rand(0, 1) == 1 ? true : false)
-                 ->setRecruiter($users[mt_rand(0, count($users) - 1)]);
+                 ->setIsPublished(mt_rand(0, 1) == 1 ? true : false);
                  for ($k = 0; $k < mt_rand(5, 5); $k++) {
-                    $job->addUser($users[mt_rand(0, count($users) - 1)]);
+                    $job->setAuthor($users[mt_rand(0, count($users) - 1)]);
+                }
+                //  ->setRecruiters($users[mt_rand(0, count($users) - 1)]);
+                 for ($k = 0; $k < mt_rand(5, 5); $k++) {
+                    $job->addCandidat($users[mt_rand(0, count($users) - 1)]); 
                 }
                
              $jobs[] = $job;
              $manager->persist($job);
          }
-    
+         $companies = [];
+         for ($i = 0; $i < 5; $i++) {
+             $company = new Company();
+             $company->setTitle($this->faker->title())
+                 ->setLocation($this->faker->text(100));
+               
+             $companies[] = $company;
+             $manager->persist($company);
+        }
+        //  $recruiters = [];
+        //  for ($i = 0; $i < 5; $i++) {
+        //      $recruiter = new Recruiter();
+        //      for ($k = 0; $k < mt_rand(5, 5); $k++) {
+        //         $recruiter->setUser($users[mt_rand(0, count($users) - 1)]);
+        //     }
+        //     for ($k = 0; $k < mt_rand(5, 5); $k++) {
+        //         $recruiter->setCompany($companies[mt_rand(0, count($companies) - 1)]);
+        //     }
+           
+        //     $recruiters[] = $recruiter;
+        //     $manager->persist($recruiter);
+        // }
+ 
 
         $manager->flush();
     }
