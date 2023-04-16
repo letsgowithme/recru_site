@@ -1,5 +1,5 @@
 
-
+@media screen and (min-width: 260px) {
 body {
   flex-direction: column;
   display: flex;
@@ -31,21 +31,17 @@ li {
 .hidden {
   display: none;
 }
-
-/* .btn {
-  color: white;
-  background-color: rgb(43, 72, 79);
+.truc {
+  transform: translateX(-50%);
 }
-.navbar {
-  background-color: rgb(7, 106, 103);
-}
-
-.dropdown-menu {
-  background-color: rgb(49, 181, 176);
-}
-.dropdown-item:hover {
-  background-color: rgb(35, 190, 190);
+/* .name_link {
+  margin-left: 130%;
+  transform: translateX(-20%);
 } */
-/* .show {
-  margin-right: 20%
-} */
+
+}
+/* @media screen and (min-width: 768px) {
+  .name_link {
+    margin-left: 35%;
+    transform: translateX(-10%);
+  } */
