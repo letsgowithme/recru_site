@@ -46,9 +46,9 @@ class Job
     #[ORM\ManyToMany(targetEntity: User::class)]
     private Collection $candidats;
 
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'jobs')]
-    #[ORM\JoinColumn(nullable: false)]
-    private $author;
+    #[ORM\ManyToOne(inversedBy: 'jobs')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    private ?User $author = null;
 
 
     /**

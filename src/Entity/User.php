@@ -59,14 +59,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(mappedBy: 'users', cascade: ['persist', 'remove'])]
     private ?Consultant $consultant = null;
 
-    #[ORM\OneToMany(mappedBy: 'author', targetEntity: Job::class)]
-    private Collection $job_annonces;
+    #[ORM\OneToMany(mappedBy: 'author', targetEntity: Annonce::class, orphanRemoval: true)]
+    private Collection $annonces;
 
+    
 
     public function __construct()
     {
         $this->jobs = new ArrayCollection();
-        $this->job_annonces = new ArrayCollection();
+        $this->annonces = new ArrayCollection();
+       
+       
+      
     }
 
     public function getId(): ?int
@@ -291,38 +295,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-
     /**
-     * @return Collection<int, Job>
+     * @return Collection<int, Annonce>
      */
-    public function getJobAnnonces(): Collection
+    public function getAnnonces(): Collection
     {
-        return $this->job_annonces;
+        return $this->annonces;
     }
 
-    public function addJobAnnonce(Job $jobAnnonce): self
+    public function addAnnonce(Annonce $annonce): self
     {
-        if (!$this->job_annonces->contains($jobAnnonce)) {
-            $this->job_annonces->add($jobAnnonce);
-            $jobAnnonce->setAuthor($this);
+        if (!$this->annonces->contains($annonce)) {
+            $this->annonces->add($annonce);
+            $annonce->setAuthor($this);
         }
 
         return $this;
     }
 
-    public function removeJobAnnonce(Job $jobAnnonce): self
+    public function removeAnnonce(Annonce $annonce): self
     {
-        if ($this->job_annonces->removeElement($jobAnnonce)) {
+        if ($this->annonces->removeElement($annonce)) {
             // set the owning side to null (unless already changed)
-            if ($jobAnnonce->getAuthor() === $this) {
-                $jobAnnonce->setAuthor(null);
+            if ($annonce->getAuthor() === $this) {
+                $annonce->setAuthor(null);
             }
         }
 
         return $this;
     }
-
-
 
     
 }

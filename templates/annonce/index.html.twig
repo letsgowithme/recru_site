@@ -12,20 +12,14 @@
 
 		{% if app.user %}
 
-			{% if is_granted("ROLE_CANDIDAT") %}
-				<h1 class="text-center text-light bg-primary mb-4" style="border-radius: 15px; padding: 10px 2px; width: auto; position: absolute; top: 15%; left: 50%; transform: translateX(-50%); padding: 10px;">Offres d'emploi pour
-					{{ app.user.firstname }}
-					{{ app.user.lastname }}</h1>
-			{% else  %}
+
 				<h1 class="text-center text-light bg-primary mb-4" style="border-radius: 15px; padding: 10px 2px; width: auto; position: absolute; top: 15%; left: 50%; transform: translateX(-50%); padding: 10px;">Mes annonces</h1>
-				<button class="btn text-light bg-primary mb-4" style="border-radius: 15px; padding: 10px 2px; width: auto; position: absolute; top: 15%; left: 85%; transform: translateX(-50%); padding: 10px;">
-					<a href="{{ path('job.new') }}" class="text-decoration-none text-white">Créer une annonce</a>
-				</button>
+					<button class="btn text-light bg-primary mb-4" style="border-radius: 15px; padding: 10px 2px; width: auto; position: absolute; top: 15%; left: 85%; transform: translateX(-50%); padding: 10px;"><a href="{{ path('job.new') }}"class="text-decoration-none text-white">Créer une annonce</a></button>
 			{% endif %}
 
 
 			<div class="d-flex justify-content-center flex-wrap">
-				{% if is_granted("ROLE_USER") %}
+				{# {% if is_granted("ROLE_CANDIDAT") %} #}
 					{% if app.user.jobs and app.user.isVerified is same as true %}
 						{% for job in app.user.jobs %}
 							<div class="card border-primary mb-3 me-3" style="width: 20rem;">
@@ -43,9 +37,23 @@
 										{{ job.author}}</p>
 								{% endfor %}
 							{% endif %}
-						{% endif %}
-						
+						{# {% endif %} #}
 
-				{% endif %}
-			</div>
-		{% endblock %}
+						{% if is_granted("ROLE_RECRUITER") %}
+							{# <h2 class="text-center text-light bg-primary mb-4" style="border-radius: 15px; padding: 10px 2px; width: auto; position: absolute; top: 15%; left: 50%; transform: translateX(-50%); padding: 10px;">Candidats pour cette offre d'emploi</h2> #}
+							</div>
+			
+				
+								{% if app.user.jobs and job.author is same as user.id %}
+						{% for job in app.user.jobs %}
+								{# <div>{{ user.lastname }}
+									{{ user.firstname }}
+								</div>  #}
+								<p>HHHHHHHHH</p>
+							{% endfor %}
+							
+						{% endif %}
+					{% endif %}
+						{% endif %}
+				</div>
+			{% endblock %}

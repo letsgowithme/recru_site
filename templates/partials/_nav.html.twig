@@ -17,6 +17,11 @@
 						<a class="nav-link fs-5 fw-bold" href="{{ path('job.index') }}">Mes offres d'emploi</a>
 				</li>
 			  	{% endif %}
+					{% if is_granted('ROLE_RECRUITER') %}
+				<li class="nav-item">
+						<a class="nav-link fs-5 fw-bold" href="{{ path('job.index') }}">Mes annonces</a>
+				</li>
+			  	{% endif %}
 				{% else %}
 				<li class="nav-item">
 			<a class="nav-link fs-5 fw-bold" href="{{ path('job.all') }}">Offres d'emploi</a>

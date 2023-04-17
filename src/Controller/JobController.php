@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Job;
 use App\Form\JobType;
 use App\Repository\JobRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,37 +35,63 @@ class JobController extends AbstractController
    
     #[Route('/index', name: 'job.index', methods: ['GET'])]
     #[IsGranted('ROLE_USER')]
-    public function all(JobRepository $jobRepository): Response
+    public function all(JobRepository $repository): Response
     {
-        $jobs = $jobRepository->findAll();
+        $jobs = $repository->findAll();
         return $this->render('job/index.html.twig', [
             'jobs' => $jobs,
         ]);
     }
+      /**
+     * Show the jobs if user is connected
+     * @param JobRepository $repository
+     * @return Response
+     */
+   
+     #[Route('/index', name: 'job.index', methods: ['GET'])]
+     #[IsGranted('ROLE_RECRUITER')]
+     public function annonces(JobRepository $repository): Response
+     {
+       $jobs =  $repository->findBy(['author' => $this->getUser()]);
+
+         return $this->render('job/index.html.twig', [
+             'jobs' => $jobs,
+             'author' => $this->getUser(),
+         ]);
+     }
     
  /**
      * This function creates a job
      * @param Job $job
      * @param Request $request
+     * @param EntityManagerInterface $manager
      * @return Response
      */
     #[IsGranted('ROLE_RECRUITER')]
     #[Route('/new', name: 'job.new', methods: ['GET', 'POST'])]
-    public function new(Request $request, JobRepository $jobRepository): Response
+    public function new(Request $request, EntityManagerInterface $manager): Response
     {
         $job = new Job();
         $form = $this->createForm(JobType::class, $job);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $jobRepository->save($job, true);
+            // $jobRepository->save($job, true);
+            $job = $form->getData();
+            $job->setAuthor($this->getUser());
+
+            $manager->persist($job);
+            $manager->flush();
+
 
             return $this->redirectToRoute('job.index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('job/new.html.twig', [
             'job' => $job,
-            'form' => $form,
+            // 'job_annonce' => $job_annonce,
+            'form' => $form->createView(),
+            
         ]);
     }
 /**

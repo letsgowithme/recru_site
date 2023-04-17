@@ -3,8 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\RecruiterRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Collection;
 
 #[ORM\Entity(repositoryClass: RecruiterRepository::class)]
 class Recruiter
@@ -22,8 +24,7 @@ class Recruiter
     #[ORM\JoinColumn(nullable: false)]
     private ?Company $Company = null;
 
-
-
+   
     public function getId(): ?int
     {
         return $this->id;
@@ -67,6 +68,7 @@ class Recruiter
 
         return $this;
     }
+    
 
   
 }
