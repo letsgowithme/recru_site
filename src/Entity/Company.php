@@ -22,7 +22,7 @@ class Company
     #[ORM\Column(type: Types::TEXT)]
     private ?string $location = null;
 
-    #[ORM\OneToMany(mappedBy: 'Company_name', targetEntity: Recruiter::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: User::class, orphanRemoval: true)]
     private Collection $recruiters;
 
     public function __construct()
@@ -60,14 +60,14 @@ class Company
     }
 
     /**
-     * @return Collection<int, Recruiter>
+     * @return Collection<int, User>
      */
     public function getRecruiters(): Collection
     {
         return $this->recruiters;
     }
 
-    public function addRecruiter(Recruiter $recruiter): self
+    public function addRecruiter(User $recruiter): self
     {
         if (!$this->recruiters->contains($recruiter)) {
             $this->recruiters->add($recruiter);

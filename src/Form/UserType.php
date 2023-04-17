@@ -2,8 +2,11 @@
 
 namespace App\Form;
 
+use App\Entity\Company;
 use App\Entity\User;
 
+use App\Repository\CompanyRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -81,24 +84,30 @@ class UserType extends AbstractType
                 ]
             ])
 
-            ->add('company', TextType::class, [
+            ->add('company', EntityType::class, [
                 'attr' => [
                     'class' => 'form-control'
                 ],
-                'label' => 'Company',
-                'label_attr' => [
-                    'class' => 'form-label  mt-4'
-                ]
+                'label' => 'Companie',
+                'class' => Company::class,
+                'query_builder' => function (CompanyRepository $r) {
+                    return $r->createQueryBuilder('i')
+                        ->orderBy('i.name', 'ASC');
+                },
+                'choice_label' => 'Companie',
+                'multiple' => false,
+                'expanded' => true
             ])
-            ->add('location', TextareaType::class, [
-                'attr' => [
-                    'class' => 'form-control'
-                ],
-                'label' => 'Adresse',
-                'label_attr' => [
-                    'class' => 'form-label  mt-4'
-                ]
-            ])
+            
+            // ->add('location', TextareaType::class, [
+            //     'attr' => [
+            //         'class' => 'form-control'
+            //     ],
+            //     'label' => 'Adresse',
+            //     'label_attr' => [
+            //         'class' => 'form-label  mt-4'
+            //     ]
+            // ])
 
             // ->add('isVerfied', CheckboxType::class, [
             //     'attr' => [

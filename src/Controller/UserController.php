@@ -50,9 +50,9 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[IsGranted('ROLE_USER')]
-    #[Route('/{id}/edit', name: 'user.edit', methods: ['GET', 'POST'])]
-    public function edit(
+    #[IsGranted('ROLE_CANDIDAT')]
+    #[Route('/{id}/candidat_edit', name: 'user.cand_edit', methods: ['GET', 'POST'])]
+    public function cand_edit(
         Request $request, 
         EntityManagerInterface $manager,
         User $user, 
@@ -71,10 +71,40 @@ class UserController extends AbstractController
                 'success',
                 'Votre recette a été modifié avec succès !'
             );
-            return $this->redirectToRoute('user.index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('job.index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('user/edit.html.twig', [
+        return $this->render('user/cand_edit.html.twig', [
+            'user' => $user,
+            'form' => $form,
+        ]);
+    }
+
+    #[IsGranted('ROLE_RECRUITER')]
+    #[Route('/{id}/recruiter_edit', name: 'user.recr_edit', methods: ['GET', 'POST'])]
+    public function recr_edit(
+        Request $request, 
+        EntityManagerInterface $manager,
+        User $user, 
+        UserRepository $userRepository): Response
+    {
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $userRepository->save($user, true);
+
+            $manager->persist($user);
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                'Votre recette a été modifié avec succès !'
+            );
+            return $this->redirectToRoute('job.index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('user/recr_edit.html.twig', [
             'user' => $user,
             'form' => $form,
         ]);

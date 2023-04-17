@@ -58,7 +58,8 @@ class UserCrudController extends AbstractCrudController
   
     AssociationField::new('jobs')
     ->setLabel('Offres d\'emploi'),
-    
+    AssociationField::new('company')
+    ->setLabel('Company'),
     ArrayField::new('roles')
             ->setLabel('Rôle'),
     DateTimeField::new('createdAt')

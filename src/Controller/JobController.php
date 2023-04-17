@@ -21,7 +21,7 @@ class JobController extends AbstractController
      * @return Response
      */
     #[Route('/', name: 'job.all', methods: ['GET'])]
-    public function index(JobRepository $jobRepository): Response
+    public function all(JobRepository $jobRepository): Response
     {
         return $this->render('job/all.html.twig', [
             'jobs' => $jobRepository->findAll(),
@@ -34,8 +34,8 @@ class JobController extends AbstractController
      */
    
     #[Route('/index', name: 'job.index', methods: ['GET'])]
-    #[IsGranted('ROLE_USER')]
-    public function all(JobRepository $repository): Response
+    #[IsGranted('ROLE_CANDIDAT')]
+    public function index(JobRepository $repository): Response
     {
         $jobs = $repository->findAll();
         return $this->render('job/index.html.twig', [
@@ -48,7 +48,7 @@ class JobController extends AbstractController
      * @return Response
      */
    
-     #[Route('/index', name: 'job.index', methods: ['GET'])]
+     #[Route('/annonces', name: 'job.annonces', methods: ['GET'])]
      #[IsGranted('ROLE_RECRUITER')]
      public function annonces(JobRepository $repository): Response
      {
@@ -116,13 +116,15 @@ class JobController extends AbstractController
      */
     #[IsGranted('ROLE_RECRUITER')]
     #[Route('/{id}/edit', name: 'job.edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Job $job, JobRepository $jobRepository): Response
+    public function edit(Request $request, 
+    Job $job, 
+    JobRepository $repository): Response
     {
         $form = $this->createForm(JobType::class, $job);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $jobRepository->save($job, true);
+            $repository->save($job, true);
 
             return $this->redirectToRoute('job.index', [], Response::HTTP_SEE_OTHER);
         }

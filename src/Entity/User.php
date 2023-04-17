@@ -56,18 +56,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(targetEntity: Recruiter::class, cascade: ['persist', 'remove'])]
     private ?Recruiter $recruiter = null;
 
-    #[ORM\OneToOne(mappedBy: 'users', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(targetEntity: Consultant::class, cascade: ['persist', 'remove'])]
     private ?Consultant $consultant = null;
 
-    #[ORM\OneToMany(mappedBy: 'author', targetEntity: Annonce::class, orphanRemoval: true)]
-    private Collection $annonces;
+    
+    #[ORM\ManyToOne(inversedBy: 'users')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Company $company = null;
 
     
 
     public function __construct()
     {
         $this->jobs = new ArrayCollection();
-        $this->annonces = new ArrayCollection();
+    
        
        
       
@@ -295,32 +297,51 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    // /**
+    //  * @return Collection<int, Annonce>
+    //  */
+    // public function getAnnonces(): Collection
+    // {
+    //     return $this->annonces;
+    // }
+
+    // public function addAnnonce(Annonce $annonce): self
+    // {
+    //     if (!$this->annonces->contains($annonce)) {
+    //         $this->annonces->add($annonce);
+    //         $annonce->setAuthor($this);
+    //     }
+
+    //     return $this;
+    // }
+
+    // public function removeAnnonce(Annonce $annonce): self
+    // {
+    //     if ($this->annonces->removeElement($annonce)) {
+    //         // set the owning side to null (unless already changed)
+    //         if ($annonce->getAuthor() === $this) {
+    //             $annonce->setAuthor(null);
+    //         }
+    //     }
+
+    //     return $this;
+    // }
+     /**
+     * Get the value of Company
+     */ 
+    public function getCompany()
+    {
+        return $this->company;
+    }
+
     /**
-     * @return Collection<int, Annonce>
-     */
-    public function getAnnonces(): Collection
+     * Set the value of Company
+     *
+     * @return  self
+     */ 
+    public function setCompany($company)
     {
-        return $this->annonces;
-    }
-
-    public function addAnnonce(Annonce $annonce): self
-    {
-        if (!$this->annonces->contains($annonce)) {
-            $this->annonces->add($annonce);
-            $annonce->setAuthor($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAnnonce(Annonce $annonce): self
-    {
-        if ($this->annonces->removeElement($annonce)) {
-            // set the owning side to null (unless already changed)
-            if ($annonce->getAuthor() === $this) {
-                $annonce->setAuthor(null);
-            }
-        }
+        $this->company = $company;
 
         return $this;
     }

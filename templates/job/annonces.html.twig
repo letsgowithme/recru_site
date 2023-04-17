@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+	Offres d'emploi
+{% endblock %}
+{% block body %}
+	<div class="container mt-4">
+		<div class="mt-4">{% include "partials/_bg_job_img.html.twig" %}"</div>
+
+		{% if app.user %}
+			{% if is_granted("ROLE_RECUITER") %}
+							<h1 class="text-center text-light bg-primary mb-4" style="border-radius: 15px; padding: 10px 2px; width: auto; position: absolute; top: 15%; left: 50%; transform: translateX(-50%); padding: 10px;">Mes annonces</h1>
+				<button class="btn text-light bg-primary mb-4" style="border-radius: 15px; padding: 10px 2px; width: auto; position: absolute; top: 15%; left: 85%; transform: translateX(-50%); padding: 10px;">
+					<a href="{{ path('job.new') }}" class="text-decoration-none text-white">Créer une annonce</a>
+				</button>
+			{% endif %}
+
+<table class="table">
+        <thead>
+            <tr>
+                <th>Offre numéro</th>
+                <th>Intitulé</th>
+                <th>Déscription</th>
+                <th>Est créée</th>
+                <th>Candidats</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+				{% if app.user.jobs and job.isApproved is same as true%}
+					
+			
+        {% for job in app.user.jobs %}
+            <tr>
+                <td>{{ job.id }}</td>
+                <td>{{ job.title }}</td>
+                <td>{{ job.description }}</td>
+                <td>{{ job.createdAt ? job.createdAt|date('Y-m-d') : '' }}</td>
+                <td> {% for candidat in job.candidats %}
+									
+								{% endfor %} </td>
+                
+                
+                <td>
+                    <a href="{{ path('job.show', {'id': job.id}) }}">show</a>
+                    <a href="{{ path('job.edit', {'id': job.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">no records found</td>
+            </tr>
+        {% endfor %}
+					{% endif %}
+        </tbody>
+    </table>
+
+
+
+{# 
+			<div class="d-flex justify-content-center flex-wrap">
+					{% if app.user.jobs  %}
+						{% for job in app.user.jobs %}
+							<div class="card border-primary mb-3 me-3" style="width: 20rem;">
+								<div class="card-header">Offre numéro
+									{{ job.id }}
+								</div>
+								<div class="card-body">
+									<h4 class="card-title">
+										<a href="{{ path('job.show', {id: job.id}) }}">{{ job.title }}</a>
+									</h4>
+									<p class="card-text">{{ job.description|slice(0, 100) ~ '...'  }}</p>
+									<h5 class="mt-3 ms-2 text-dark">Créé le:
+										{{ job.createdAt ? job.createdAt|date('Y-m-d') : '' }}</h5>
+									<p>Créée par
+										{{ job.author}}</p>
+								{% endfor %}
+							{% endif %}
+						{% endif %} #}
+						
+
+				{% endif %}
+			</div>
+		{% endblock %}

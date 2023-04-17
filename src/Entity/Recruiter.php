@@ -22,7 +22,7 @@ class Recruiter
 
     #[ORM\ManyToOne(inversedBy: 'recruiters')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Company $Company = null;
+    private ?Company $company = null;
 
    
     public function getId(): ?int
@@ -54,7 +54,7 @@ class Recruiter
      */ 
     public function getCompany()
     {
-        return $this->Company;
+        return $this->company;
     }
 
     /**
@@ -62,9 +62,9 @@ class Recruiter
      *
      * @return  self
      */ 
-    public function setCompany($Company)
+    public function setCompany($company)
     {
-        $this->Company = $Company;
+        $this->company = $company;
 
         return $this;
     }

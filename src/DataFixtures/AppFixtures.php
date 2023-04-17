@@ -65,7 +65,7 @@ class AppFixtures extends Fixture
     for ($i = 0; $i < 5; $i++) {
         $company = new Company();
         $company->setTitle($this->faker->title())
-            ->setLocation($this->faker->text(100));
+                ->setLocation($this->faker->text(100));
           
         $companies[] = $company;
         $manager->persist($company);
@@ -97,7 +97,7 @@ class AppFixtures extends Fixture
                  ->setIsApproved(mt_rand(0, 1) == 1 ? true : false)
                  ->setIsPublished(mt_rand(0, 1) == 1 ? true : false);
                  for ($k = 0; $k < mt_rand(5, 5); $k++) {
-                    $job->setAuthor($recruiters[mt_rand(0, count($recruiters) - 1)]);
+                    $job->setAuthor($users[mt_rand(0, count($users) - 1)]);
                 }
                 //  ->setRecruiters($users[mt_rand(0, count($users) - 1)]);
                  for ($k = 0; $k < mt_rand(5, 5); $k++) {
