@@ -48,7 +48,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = 'password';
 
     #[ORM\Column]
-    private? bool $isVerified = false;
+    private ?bool $isVerified = false;
 
     #[ORM\ManyToMany(targetEntity: Job::class)]
     private Collection $jobs;
@@ -62,21 +62,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(targetEntity: Consultant::class, cascade: ['persist', 'remove'])]
     private ?Consultant $consultant = null;
 
-    
+
     #[ORM\ManyToOne(inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: true)]
     private ?Company $company = null;
 
-    
-    
+    #[ORM\Column(type: 'string', length: 100)]
+    private ?string $resetToken = null;
+
 
     public function __construct()
     {
         $this->jobs = new ArrayCollection();
-    
-       
-       
-      
     }
 
     public function getId(): ?int
@@ -98,7 +95,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * Get the value of firstname
-     */ 
+     */
     public function getFirstname()
     {
         return $this->firstname;
@@ -108,7 +105,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * Set the value of firstname
      *
      * @return  self
-     */ 
+     */
     public function setFirstname($firstname)
     {
         $this->firstname = $firstname;
@@ -118,7 +115,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * Get the value of lastname
-     */ 
+     */
     public function getLastname()
     {
         return $this->lastname;
@@ -128,14 +125,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * Set the value of lastname
      *
      * @return  self
-     */ 
+     */
     public function setLastname($lastname)
     {
         $this->lastname = $lastname;
 
         return $this;
     }
-      
+
 
     /**
      * A visual identifier that represents this user.
@@ -166,9 +163,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-      /**
+    /**
      * Get the value of plainPassword
-     */ 
+     */
     public function getPlainPassword()
     {
         return $this->plainPassword;
@@ -178,7 +175,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * Set the value of plainPassword
      *
      * @return  self
-     */ 
+     */
     public function setPlainPassword($plainPassword)
     {
         $this->plainPassword = $plainPassword;
@@ -224,11 +221,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-   
+
 
     /**
      * Get the value of jobs
-     */ 
+     */
     public function getJobs()
     {
         return $this->jobs;
@@ -238,7 +235,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * Set the value of jobs
      *
      * @return  self
-     */ 
+     */
     public function setJobs($jobs)
     {
         $this->jobs = $jobs;
@@ -330,9 +327,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     //     return $this;
     // }
-     /**
+    /**
      * Get the value of Company
-     */ 
+     */
     public function getCompany()
     {
         return $this->company;
@@ -342,7 +339,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * Set the value of Company
      *
      * @return  self
-     */ 
+     */
     public function setCompany($company)
     {
         $this->company = $company;
@@ -350,11 +347,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    
+
 
     /**
      * Get the value of cvFilename
-     */ 
+     */
     public function getCvFilename()
     {
         return $this->cvFilename;
@@ -364,10 +361,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * Set the value of cvFilename
      *
      * @return  self
-     */ 
+     */
     public function setCvFilename($cvFilename)
     {
         $this->cvFilename = $cvFilename;
+
+        return $this;
+    }
+    public function getResetToken(): ?string
+    {
+        return $this->resetToken;
+    }
+
+    public function setResetToken(?string $resetToken): self
+    {
+        $this->resetToken = $resetToken;
 
         return $this;
     }
