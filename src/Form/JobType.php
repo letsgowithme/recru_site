@@ -43,9 +43,9 @@ class JobType extends AbstractType
                 'class' => Company::class,
                 'query_builder' => function (CompanyRepository $r) {
                     return $r->createQueryBuilder('i')
-                        ->orderBy('i.name', 'ASC');
+                        ->orderBy('i.title', 'ASC');
                 },
-                'choice_label' => 'Companie',
+                'choice_label' => 'Title',
                 'multiple' => false,
                 'expanded' => true
             ])

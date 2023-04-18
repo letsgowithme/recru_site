@@ -8,9 +8,12 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('/user')]
 class UserController extends AbstractController
@@ -51,37 +54,61 @@ class UserController extends AbstractController
     }
 
     #[IsGranted('ROLE_CANDIDAT')]
-    #[Route('/{id}/candidat_edit', name: 'user.cand_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/cand_edit', name: 'user.candidat_edit', methods: ['GET', 'POST'])]
     public function cand_edit(
         Request $request, 
         EntityManagerInterface $manager,
         User $user, 
-        UserRepository $userRepository): Response
+        UserRepository $userRepository,
+        SluggerInterface $slugger
+        ): Response
     {
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $userRepository->save($user, true);
+            /** @var UploadedFile $cvFile */
+            $cvFile = $form->get('cv')->getData();
+
+            if ($cvFile) {
+                $originalFilename = pathinfo($cvFile->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$cvFile->guessExtension();
+
+                // Move the file to the directory where brochures are stored
+                try {
+                    $cvFile->move(
+                        $this->getParameter('cv_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+
+                // updates the 'brochureFilename' property to store the PDF file name
+                // instead of its contents
+            $user->setCvFilename($newFilename);
 
             $manager->persist($user);
             $manager->flush();
-
+            }
             $this->addFlash(
                 'success',
-                'Votre recette a été modifié avec succès !'
+                'Votre profile a été modifié avec succès !'
             );
             return $this->redirectToRoute('job.index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('user/cand_edit.html.twig', [
+        return $this->render('user/candidat_edit.html.twig', [
             'user' => $user,
             'form' => $form,
         ]);
     }
 
     #[IsGranted('ROLE_RECRUITER')]
-    #[Route('/{id}/recruiter_edit', name: 'user.recr_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/recr_edit', name: 'user.recruiter_edit', methods: ['GET', 'POST'])]
     public function recr_edit(
         Request $request, 
         EntityManagerInterface $manager,
@@ -99,19 +126,19 @@ class UserController extends AbstractController
 
             $this->addFlash(
                 'success',
-                'Votre recette a été modifié avec succès !'
+                'Votre profile a été modifié avec succès !'
             );
             return $this->redirectToRoute('job.index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('user/recr_edit.html.twig', [
+        return $this->render('user/recruiter_edit.html.twig', [
             'user' => $user,
             'form' => $form,
         ]);
     }
 
     #[Route('/delete/{id}', 'user.delete', methods: ['GET'])]
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_USER')]
     public function delete(
         EntityManagerInterface $manager,
         User $user
@@ -122,7 +149,7 @@ class UserController extends AbstractController
 
         $this->addFlash(
             'success',
-            'Votre user a été supprimé avec succès !'
+            'Votre profile a été supprimé avec succès !'
         );
 
         return $this->redirectToRoute('user.index');

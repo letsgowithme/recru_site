@@ -23,6 +23,7 @@ class Company
     private ?string $location = null;
 
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: User::class, orphanRemoval: true)]
+    #[ORM\JoinColumn(nullable: true)]
     private Collection $recruiters;
 
     public function __construct()
@@ -87,5 +88,9 @@ class Company
         }
 
         return $this;
+    }
+    public function __toString()
+    {
+        return $this->title;
     }
 }

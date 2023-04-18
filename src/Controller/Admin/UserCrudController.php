@@ -29,7 +29,7 @@ class UserCrudController extends AbstractCrudController
                 ->setEntityLabelInPlural('Utilisateurs')
                 ->setEntityLabelInSingular('Utilisateur')
                 ->setSearchFields(['lastname'])
-                ->setPageTitle("index", "Administration des patients")
+                ->setPageTitle("index", "Administration des utilisateurs")
                 ->setDefaultSort(['lastname' => 'asc'])
                 ->setPageTitle(pageName:Crud::PAGE_INDEX, title: 'Utilisateurs')
                 ->setPageTitle(pageName:Crud::PAGE_NEW, title: 'Créer un Utilisateur')

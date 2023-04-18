@@ -65,7 +65,7 @@ class AppFixtures extends Fixture
     for ($i = 0; $i < 5; $i++) {
         $company = new Company();
         $company->setTitle($this->faker->title())
-                ->setLocation($this->faker->text(100));
+                ->setLocation($this->faker->address());
           
         $companies[] = $company;
         $manager->persist($company);

@@ -32,6 +32,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $lastname = null;
 
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $cvFilename = null;
+
     #[ORM\Column]
     private array $roles = [];
 
@@ -64,6 +67,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinColumn(nullable: true)]
     private ?Company $company = null;
 
+    
     
 
     public function __construct()
@@ -347,4 +351,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     
+
+    /**
+     * Get the value of cvFilename
+     */ 
+    public function getCvFilename()
+    {
+        return $this->cvFilename;
+    }
+
+    /**
+     * Set the value of cvFilename
+     *
+     * @return  self
+     */ 
+    public function setCvFilename($cvFilename)
+    {
+        $this->cvFilename = $cvFilename;
+
+        return $this;
+    }
 }
