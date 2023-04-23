@@ -53,8 +53,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Job::class)]
     private Collection $jobs;
 
-    #[ORM\OneToOne(targetEntity: Candidat::class, cascade: ['persist', 'remove'])]
-    private ?Candidat $candidat = null;
+    #[ORM\OneToOne(targetEntity: Candidate::class, cascade: ['persist', 'remove'])]
+    private ?Candidate $candidate = null;
 
     #[ORM\OneToOne(targetEntity: Recruiter::class, cascade: ['persist', 'remove'])]
     private ?Recruiter $recruiter = null;
@@ -67,13 +67,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinColumn(nullable: true)]
     private ?Company $company = null;
 
-    #[ORM\Column(type: 'string', length: 100)]
+    #[ORM\Column(type: 'string', length: 100, nullable: true)]
     private ?string $resetToken = null;
 
+    // #[ORM\OneToMany(mappedBy: 'candidate', targetEntity: Apply::class)]
+    // private Collection $applies;
+    
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Apply::class)]
+    private Collection $applies;
 
     public function __construct()
     {
         $this->jobs = new ArrayCollection();
+        $this->applies = new ArrayCollection();
+       
     }
 
     public function getId(): ?int
@@ -242,24 +249,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-    public function __toString()
+   
+    public function getCandidate(): ?Candidate
     {
-        return $this->lastname;
+        return $this->candidate;
     }
 
-    public function getCandidat(): ?Candidat
-    {
-        return $this->candidat;
-    }
-
-    public function setCandidat(Candidat $candidat): self
+    public function setCandidate(Candidate $candidate): self
     {
         // set the owning side of the relation if necessary
-        if ($candidat->getUser() !== $this) {
-            $candidat->setUser($this);
+        if ($candidate->getUser() !== $this) {
+            $candidate->setUser($this);
         }
 
-        $this->candidat = $candidat;
+        $this->candidate = $candidate;
 
         return $this;
     }
@@ -298,35 +301,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    // /**
-    //  * @return Collection<int, Annonce>
-    //  */
-    // public function getAnnonces(): Collection
-    // {
-    //     return $this->annonces;
-    // }
-
-    // public function addAnnonce(Annonce $annonce): self
-    // {
-    //     if (!$this->annonces->contains($annonce)) {
-    //         $this->annonces->add($annonce);
-    //         $annonce->setAuthor($this);
-    //     }
-
-    //     return $this;
-    // }
-
-    // public function removeAnnonce(Annonce $annonce): self
-    // {
-    //     if ($this->annonces->removeElement($annonce)) {
-    //         // set the owning side to null (unless already changed)
-    //         if ($annonce->getAuthor() === $this) {
-    //             $annonce->setAuthor(null);
-    //         }
-    //     }
-
-    //     return $this;
-    // }
     /**
      * Get the value of Company
      */
@@ -379,4 +353,42 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Apply>
+     */
+    public function getApplies(): Collection
+    {
+        return $this->applies;
+    }
+
+    public function addApply(Apply $apply): self
+    {
+        if (!$this->applies->contains($apply)) {
+            $this->applies->add($apply);
+            $apply->setCandidate($this);
+        }
+
+        return $this;
+    }
+
+    public function removeApply(Apply $apply): self
+    {
+        if ($this->applies->removeElement($apply)) {
+            // set the owning side to null (unless already changed)
+            if ($apply->getCandidate() === $this) {
+                $apply->setCandidate(null);
+            }
+        }
+
+        return $this;
+    }
+ 
+
+    public function __toString()
+    {
+        return $this->lastname;
+        
+    }
+
 }

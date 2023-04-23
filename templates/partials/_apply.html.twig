@@ -1,0 +1,42 @@
+<div class="mt-4">
+	<div class="apply">
+		{% if app.user %}
+			{% if is_granted('ROLE_CANDIDATE') %}
+				<div class="apply__new">
+					<div class="w-full-width">
+						{{ form_start(formApply) }}
+
+						{{ form_widget(formApply.content)  }}
+						<button class="btn bg-primary text-light mb-4" type="submit" id="button-addon2">
+							Postuler
+						</button>
+						{{ form_end(formApply) }}
+
+					</div>
+				</div>
+			{% endif %}
+			{% endif %}
+		</div>
+	</div>
+
+	{% if app.user and is_granted('ROLE_RECRUITER') %}
+		<h2 class="text-2xl mb-8 text-dark">Candidats(s)</h2>
+		<ol>
+			{% for apply in job.applies %}
+				{% if apply.isApproved %}
+
+					<li>
+						{{ apply.candidate.firstname}}
+						{{ apply.candidate.lastname}}
+						-
+						{{ apply.candidate.email }}
+						-
+						{% include "partials/_cv_show.html.twig" %}
+					</li>
+
+					<hr class="mx-4">
+				{% endif %}
+			{% endfor %}
+		</ol>
+	{% endif %}
+		

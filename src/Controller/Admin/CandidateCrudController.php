@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Candidat;
+use App\Entity\Candidate;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -13,11 +13,11 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Form\Type\FileUploadType;
 
-class CandidatCrudController extends AbstractCrudController
+class CandidateCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return Candidat::class;
+        return Candidate::class;
     }
 
     public function configureCrud(Crud $crud): Crud
@@ -25,16 +25,15 @@ class CandidatCrudController extends AbstractCrudController
     return $crud
                 ->setEntityLabelInPlural('Candidats')
                 ->setEntityLabelInSingular('Candidat')
-                // ->setSearchFields(['lastname'])
                 ->setPageTitle("index", "Administration des candidats")
-                // ->setDefaultSort(['lastname' => 'asc'])
+                ->setDefaultSort(['candidate.lastname' => 'asc'])
                 ->setPageTitle(pageName:Crud::PAGE_INDEX, title: 'Candidats')
                 
     ;
     }
     public function configureFields(string $pageName): iterable
     {
-         $roles = ['ROLE_CANDIDAT', 'ROLE_USER'];
+         $roles = ['ROLE_CANDIDATE', 'ROLE_USER'];
     return [
     IdField::new('id')
     ->hideOnForm(),

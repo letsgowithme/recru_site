@@ -2,7 +2,8 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Candidat;
+use App\Entity\Candidate;
+use App\Entity\Comment;
 use App\Entity\Company;
 use App\Entity\Job;
 use App\Entity\Recruiter;
@@ -44,51 +45,51 @@ class AppFixtures extends Fixture
            $user->setLastname($this->faker->lastname())
            ->setFirstname($this->faker->firstname())
                ->setEmail($this->faker->email())
-               ->setRoles(mt_rand(0, 1) == 1 ? ['ROLE_CANDIDAT'] : ['ROLE_RECRUITER'])
+               ->setRoles(mt_rand(0, 1) == 1 ? ['ROLE_CANDIDATE'] : ['ROLE_RECRUITER'])
                ->setPlainPassword('password');
             
                $users[] = $user;
            $manager->persist($user);
        }
-    //    $candidats = [];
+    //    $candidates = [];
     //    for ($i = 0; $i < 5; $i++) {
-    //        $candidat = new Candidat();
+    //        $candidate = new Candidate();
     //        for ($k = 0; $k < mt_rand(5, 5); $k++) {
     //           $candidat->setUser($users[mt_rand(0, count($users) - 1)]);
     //       }
          
 
-    //       $candidats[] = $candidat;
-    //       $manager->persist($candidat);
+    //       $candidates[] = $candidate;
+    //       $manager->persist($candidate);
     //   }
     $companies = [];
     for ($i = 0; $i < 5; $i++) {
         $company = new Company();
-        $company->setTitle($this->faker->title())
+        $company->setTitle($this->faker->word())
                 ->setLocation($this->faker->address());
           
         $companies[] = $company;
         $manager->persist($company);
    }
-     $recruiters = [];
-         for ($i = 0; $i < 5; $i++) {
-             $recruiter = new Recruiter();
-             for ($k = 0; $k < mt_rand(5, 5); $k++) {
-                $recruiter->setUser($users[mt_rand(0, count($users) - 1)]);
-            }
-            for ($k = 0; $k < mt_rand(5, 5); $k++) {
-                $recruiter->setCompany($companies[mt_rand(0, count($companies) - 1)]);
-            }
+    //  $recruiters = [];
+    //      for ($i = 0; $i < 5; $i++) {
+    //          $recruiter = new Recruiter();
+    //          for ($k = 0; $k < mt_rand(5, 5); $k++) {
+    //             $recruiter->setUser($users[mt_rand(0, count($users) - 1)]);
+    //         }
+    //         for ($k = 0; $k < mt_rand(5, 5); $k++) {
+    //             $recruiter->setCompany($companies[mt_rand(0, count($companies) - 1)]);
+    //         }
            
-            $recruiters[] = $recruiter;
-            $manager->persist($recruiter);
-        }
+    //         $recruiters[] = $recruiter;
+    //         $manager->persist($recruiter);
+    //     }
 
          //Jobs
          $jobs = [];
          for ($i = 0; $i < 5; $i++) {
              $job = new Job();
-             $job->setTitle($this->faker->title())
+             $job->setTitle($this->faker->word())
                  ->setCompany($this->faker->word())
                  ->setLocation($this->faker->text(100))
                  ->setDescription($this->faker->text(100))
@@ -101,12 +102,26 @@ class AppFixtures extends Fixture
                 }
                 //  ->setRecruiters($users[mt_rand(0, count($users) - 1)]);
                  for ($k = 0; $k < mt_rand(5, 5); $k++) {
-                    $job->addCandidat($users[mt_rand(0, count($users) - 1)]); 
+                    $job->addCandidate($users[mt_rand(0, count($users) - 1)]); 
                 }
                
              $jobs[] = $job;
              $manager->persist($job);
          }
+          //Comments
+        // $applies = [];
+        // foreach ($jobs as $job) {
+        // for ($n = 0; $n < 5; $n++) {
+        //     $apply = new Comment();
+        //     $apply
+        //             ->setisApproved(mt_rand(0, 3) === 0 ? false : true)
+        //             ->setCandidate($users[mt_rand(0, count($users) - 1)])
+        //             ->setJob($job);
+
+        //     $manager->persist($apply);
+        //     $job->addComment($apply);
+        // }
+        // }
          
         
  

@@ -12,7 +12,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Form\Type\FileUploadType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -41,7 +43,7 @@ class UserCrudController extends AbstractCrudController
     
     public function configureFields(string $pageName): iterable
     {
-         $roles = ['ROLE_ADMIN', 'ROLE_CANDIDAT', 'ROLE_RECRUITER', 'ROLE_USER'];
+         $roles = ['ROLE_ADMIN', 'ROLE_CANDIDATE', 'ROLE_RECRUITER', 'ROLE_USER'];
     return [
     IdField::new('id')
     ->hideOnForm(),
@@ -50,6 +52,11 @@ class UserCrudController extends AbstractCrudController
     TextField::new('firstname')
     ->setLabel('Prénom'),
     TextField::new('email'),
+    ImageField::new('cvFilename')
+    ->setFormType(FileUploadType::class)
+    ->setUploadDir('/public/uploads/cv')
+    ->setRequired(false)
+    ->setLabel('CV'),
     TextField::new('plainPassword', 'password')
         ->setFormType(PasswordType::class)
         ->setRequired($pageName === Crud::PAGE_NEW)

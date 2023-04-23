@@ -3,32 +3,26 @@
 	Offres d'emploi
 {% endblock %}
 {% block body %}
-	<div class="container mt-4">
-		<h1>Offres d'emploi</h1>
-		<div
-			class="d-flex justify-content-center flex-wrap">
+	<div class="container mt-4 mb-4">
+		<div class="mt-4">{% include "partials/_bg_all_jobs_img.html.twig" %}"</div>
+		<h1 class="text-center text-light mb-4">Offres d'emploi</h1>
+		<div class="d-flex justify-content-center flex-wrap">
 			{% for job in jobs %}
 				<div class="card border-primary mb-3 me-3" style="width: 20rem;">
 					<div class="card-header">Offre numéro
 						{{ job.id }}
 					</div>
-
 					<div class="card-body">
-                    
 						<h4 class="card-title">
 							<a href="{{ path('job.show', {id: job.id}) }}">{{ job.title }}</a>
 						</h4>
-						
-						<p class="card-text">{{ job.description|slice(0, 100) ~ '...'  }}</p>
+						<p class="card-text">{{ job.description|raw }}</p>
 						<h5 class="mt-3 ms-2 text-dark">Créé le:
 							{{ job.createdAt ? job.createdAt|date('Y-m-d') : '' }}</h5>
 					</div>
 				</div>
 			{% endfor %}
-			
-
-
 		</div>
 	</div>
+	<br><br><br>
 {% endblock %}
-

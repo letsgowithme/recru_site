@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Apply;
 use App\Entity\Job;
+use App\Form\ApplyType;
 use App\Form\JobType;
 use App\Repository\JobRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -34,7 +36,7 @@ class JobController extends AbstractController
      */
    
     #[Route('/index', name: 'job.index', methods: ['GET'])]
-    #[IsGranted('ROLE_CANDIDAT')]
+    #[IsGranted('ROLE_USER')]
     public function index(JobRepository $repository): Response
     {
         $jobs = $repository->findAll();
@@ -54,7 +56,7 @@ class JobController extends AbstractController
      {
        $jobs =  $repository->findBy(['author' => $this->getUser()]);
 
-         return $this->render('job/index.html.twig', [
+         return $this->render('job/annonces.html.twig', [
              'jobs' => $jobs,
              'author' => $this->getUser(),
          ]);
@@ -84,7 +86,7 @@ class JobController extends AbstractController
             $manager->flush();
 
 
-            return $this->redirectToRoute('job.index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('job.annonces', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('job/new.html.twig', [
@@ -94,19 +96,55 @@ class JobController extends AbstractController
             
         ]);
     }
-/**
-     * Show the job detail of a user
-     * @param Job $job
-     * @param Request $request
-     * @return Response
-     */
-    #[Route('/{id}', name: 'job.show', methods: ['GET'])]
-    public function show(Job $job): Response
-    {
-        return $this->render('job/show.html.twig', [
-            'job' => $job,
-        ]);
-    }
+
+  /**
+      * Show a job
+      * @param Job $job
+      * @param Request $request
+      * @param EntityManagerInterface $manager
+      * @return Response
+      */
+ 
+      #[Route('/{id}', name: 'job.show',methods: ['GET', 'POST'])]
+      public function show(
+          Job $job,
+          Request $request,
+          EntityManagerInterface $manager,
+          JobRepository $repository
+      ): Response {
+        
+
+        $apply = new Apply();
+        $apply->setJob($job);
+          if ($this->getUser()) {
+              $apply->setCandidate($this->getUser());
+          }
+        $formApply = $this->createForm(ApplyType::class, $apply);
+          
+        $formApply->handleRequest($request);
+          
+  
+          /* form Apply */
+  
+          if ($formApply->isSubmitted() && $formApply->isValid()) {
+           
+              $manager->persist($apply);
+              $manager->flush();
+              $this->addFlash(
+                  'success',
+                  'Vous avez postulé pour cette annonce'
+              );
+              return $this->redirectToRoute('job.show', ['id' => $job->getId()]);
+          }
+  
+         
+          return $this->render('job/show.html.twig', [
+              'job' => $job,
+              'formApply' => $formApply->createView()
+  
+          ]);
+      }
+
 
      /**
      * This function edits the job
@@ -141,7 +179,7 @@ class JobController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    #[IsGranted('ROLE_RECRUITER')]
+    // #[IsGranted('ROLE_RECRUITER')]
     #[Route('/{id}', name: 'job.delete', methods: ['POST'])]
     public function delete(Request $request, Job $job, JobRepository $jobRepository): Response
     {

@@ -11,8 +11,11 @@
 						<span class="visually-hidden">(current)</span>
 					</a>
 				</li>
+					<li class="nav-item">
+			<a class="nav-link fs-5 fw-bold" href="{{ path('job.all') }}">Offres d'emploi</a>
+				</li>
 				{% if app.user %}
-					{% if is_granted('ROLE_CANDIDAT') %}
+					{% if is_granted('ROLE_CANDIDATE') %}
 				<li class="nav-item">
 						<a class="nav-link fs-5 fw-bold" href="{{ path('job.index') }}">Mes offres d'emploi</a>
 				</li>
@@ -22,10 +25,7 @@
 						<a class="nav-link fs-5 fw-bold" href="{{ path('job.annonces') }}">Mes annonces</a>
 				</li>
 			  	{% endif %}
-				{% else %}
-				<li class="nav-item">
-			<a class="nav-link fs-5 fw-bold" href="{{ path('job.all') }}">Offres d'emploi</a>
-				</li>
+			
 				{% endif %}
 			</ul>
 			{% if not app.user %}
@@ -51,9 +51,9 @@
 							<div class="dropdown-divider"></div>
 						{% endif %}
 							{% if app.user and app.user.isverified is same as true %}
-								{% if is_granted('ROLE_CANDIDAT') %}
+								{% if is_granted('ROLE_CANDIDATE') %}
 
-						<a class="dropdown-item fw-bold" href="{{ path('user.candidat_edit', {id : app.user.id}) }}">Modifier le profil</a>
+						<a class="dropdown-item fw-bold" href="{{ path('user.candidate_edit', {id : app.user.id}) }}">Modifier le profil</a>
 						<div class="dropdown-divider"></div>
 					{% else %}
 						<a class="dropdown-item fw-bold" href="{{ path('user.recruiter_edit', {id : app.user.id}) }}">Modifier le profil</a>

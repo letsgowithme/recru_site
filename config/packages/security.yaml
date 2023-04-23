@@ -47,9 +47,9 @@ security:
         # - { path: ^/recruteur, role: ROLE_RECR}
 
     role_hierarchy:
-        ROLE_CANDIDAT:  ROLE_USER
+        ROLE_CANDIDATE:  ROLE_USER
         ROLE_RECRUITER:  ROLE_USER
-        ROLE_CONSULTANT:  [ROLE_CANDIDAT, ROLE_RECRUITER, ROLE_ADMIN]
+        ROLE_CONSULTANT:  [ROLE_CANDIDATE, ROLE_RECRUITER, ROLE_ADMIN]
         ROLE_SUPER_ADMIN: ROLE_CONSULTANT
 
     

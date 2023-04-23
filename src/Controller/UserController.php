@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\CandidateType;
+use App\Form\RecruiterType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -53,8 +55,8 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[IsGranted('ROLE_CANDIDAT')]
-    #[Route('/{id}/cand_edit', name: 'user.candidat_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_CANDIDATE')]
+    #[Route('/{id}/cand_edit', name: 'user.candidate_edit', methods: ['GET', 'POST'])]
     public function cand_edit(
         Request $request, 
         EntityManagerInterface $manager,
@@ -63,13 +65,13 @@ class UserController extends AbstractController
         SluggerInterface $slugger
         ): Response
     {
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
+        $cand_form = $this->createForm(CandidateType::class, $user);
+        $cand_form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($cand_form->isSubmitted() && $cand_form->isValid()) {
             $userRepository->save($user, true);
             /** @var UploadedFile $cvFile */
-            $cvFile = $form->get('cv')->getData();
+            $cvFile = $cand_form->get('cvFilename')->getData();
 
             if ($cvFile) {
                 $originalFilename = pathinfo($cvFile->getClientOriginalName(), PATHINFO_FILENAME);
@@ -101,9 +103,9 @@ class UserController extends AbstractController
             return $this->redirectToRoute('job.index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('user/candidat_edit.html.twig', [
+        return $this->render('user/candidate_edit.html.twig', [
             'user' => $user,
-            'form' => $form,
+            'cand_form' => $cand_form,
         ]);
     }
 
@@ -115,10 +117,10 @@ class UserController extends AbstractController
         User $user, 
         UserRepository $userRepository): Response
     {
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
+        $recr_form = $this->createForm(RecruiterType::class, $user);
+        $recr_form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($recr_form->isSubmitted() && $recr_form->isValid()) {
             $userRepository->save($user, true);
 
             $manager->persist($user);
@@ -133,7 +135,7 @@ class UserController extends AbstractController
 
         return $this->render('user/recruiter_edit.html.twig', [
             'user' => $user,
-            'form' => $form,
+            'recr_form' => $recr_form,
         ]);
     }
 

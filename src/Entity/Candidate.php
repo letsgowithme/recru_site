@@ -2,29 +2,32 @@
 
 namespace App\Entity;
 
-use App\Repository\CandidatRepository;
+use App\Repository\CandidateRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: CandidatRepository::class)]
-class Candidat
+#[ORM\Entity(repositoryClass: CandidateRepository::class)]
+class Candidate
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(targetEntity: User::class, inversedBy: 'candidat', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(targetEntity: User::class, inversedBy: 'candidate', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
     #[ORM\ManyToMany(targetEntity: Job::class)]
     private Collection $jobs;
 
+ 
+
     public function __construct()
     {
         $this->jobs = new ArrayCollection();
+       
     }
 
     public function getId(): ?int
@@ -63,4 +66,10 @@ class Candidat
 
         return $this;
     }
+ 
+    // public function __toString()
+    // {
+    //     return $this->lastname;
+        
+    // }
 }

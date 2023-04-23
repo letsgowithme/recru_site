@@ -7,9 +7,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 
-
+#[UniqueEntity(fields: ['title'], message: 'There is already an offer with this name')]
 #[ORM\Entity(repositoryClass: JobRepository::class)]
 class Job
 {
@@ -24,7 +25,7 @@ class Job
     #[ORM\Column(length: 255)]
     private ?string $company = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $location = null;
 
     #[ORM\Column(type: Types::TEXT)]
@@ -44,24 +45,29 @@ class Job
 
 
     #[ORM\ManyToMany(targetEntity: User::class)]
-    private Collection $candidats;
+    private Collection $candidates;
 
     #[ORM\ManyToOne(inversedBy: 'jobs')]
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private ?User $author = null;
 
-
-    /**
-     * Constructor
-     */
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
 
+
+    #[ORM\OneToMany(mappedBy: 'job', targetEntity: Apply::class)]
+    private Collection $applies;
+
+
+    /**
+     * Constructor
+     */
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
-        $this->candidats = new ArrayCollection();
+        $this->candidates = new ArrayCollection();
+        $this->applies = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -187,15 +193,15 @@ class Job
    /**
      * @return Collection<int, User>
      */
-    public function getCandidats(): Collection
+    public function getCandidates(): Collection
     {
-        return $this->candidats;
+        return $this->candidates;
     }
 
-    public function addCandidat(User $candidat): self
+    public function addCandidate(User $candidate): self
     {
-        if (!$this->candidats->contains($candidat)) {
-            $this->candidats->add($candidat);
+        if (!$this->candidates->contains($candidate)) {
+            $this->candidates->add($candidate);
         }
 
         return $this;
@@ -221,4 +227,36 @@ class Job
 
         return $this;
     }
+
+     /**
+     * @return Collection<int, Apply>
+     */
+    public function getApplies(): Collection
+    {
+        return $this->applies;
+    }
+
+    public function addApply(Apply $apply): self
+    {
+        if (!$this->applies->contains($apply)) {
+            $this->applies->add($apply);
+            $apply->setJob($this);
+        }
+
+        return $this;
+    }
+
+    public function removeApply(Apply $apply): self
+    {
+        if ($this->applies->removeElement($apply)) {
+            // set the owning side to null (unless already changed)
+            if ($apply->getJob() === $this) {
+                $apply->setJob(null);
+            }
+        }
+
+        return $this;
+    }
+    
+
 }

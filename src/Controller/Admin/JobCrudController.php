@@ -55,7 +55,7 @@ class JobCrudController extends AbstractCrudController
                 ->setLabel('Emploi de temps')
                 ->setFormType(CKEditorType::class)
                 ->hideOnIndex(),
-            AssociationField::new('candidats')
+            AssociationField::new('candidates')
                 ->setLabel('Candidats'),
                 AssociationField::new('author')
                 ->setLabel('Auteur'),
