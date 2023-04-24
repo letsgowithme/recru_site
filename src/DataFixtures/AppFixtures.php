@@ -30,14 +30,23 @@ class AppFixtures extends Fixture
         // Users
         $users = [];
 
-        $admin = new User();
-        $admin->setLastname('Administrateur')
+        $super_admin = new User();
+        $super_admin->setLastname('Administrateur')
                ->setEmail('admin@recru.fr')
-               ->setRoles(['ROLE_ADMIN'])
+               ->setRoles(['ROLE_SUPER_ADMIN'])
                ->setPlainPassword('password');
             
-               $users[] = $admin;
-           $manager->persist($admin);
+               $users[] = $super_admin;
+           $manager->persist($super_admin);
+           
+           $admin = new User();
+           $admin->setLastname('Consultant')
+                  ->setEmail('consult@recru.fr')
+                  ->setRoles(['ROLE_ADMIN'])
+                  ->setPlainPassword('password');
+               
+                  $users[] = $admin;
+              $manager->persist($admin);
 
 
         for ($j = 0; $j < 10; $j++) {
@@ -51,56 +60,21 @@ class AppFixtures extends Fixture
                $users[] = $user;
            $manager->persist($user);
        }
-    //    $candidates = [];
-    //    for ($i = 0; $i < 5; $i++) {
-    //        $candidate = new Candidate();
-    //        for ($k = 0; $k < mt_rand(5, 5); $k++) {
-    //           $candidat->setUser($users[mt_rand(0, count($users) - 1)]);
-    //       }
-         
-
-    //       $candidates[] = $candidate;
-    //       $manager->persist($candidate);
-    //   }
-    $companies = [];
-    for ($i = 0; $i < 5; $i++) {
-        $company = new Company();
-        $company->setTitle($this->faker->word())
-                ->setLocation($this->faker->address());
-          
-        $companies[] = $company;
-        $manager->persist($company);
-   }
-    //  $recruiters = [];
-    //      for ($i = 0; $i < 5; $i++) {
-    //          $recruiter = new Recruiter();
-    //          for ($k = 0; $k < mt_rand(5, 5); $k++) {
-    //             $recruiter->setUser($users[mt_rand(0, count($users) - 1)]);
-    //         }
-    //         for ($k = 0; $k < mt_rand(5, 5); $k++) {
-    //             $recruiter->setCompany($companies[mt_rand(0, count($companies) - 1)]);
-    //         }
-           
-    //         $recruiters[] = $recruiter;
-    //         $manager->persist($recruiter);
-    //     }
-
+ 
          //Jobs
          $jobs = [];
          for ($i = 0; $i < 5; $i++) {
              $job = new Job();
              $job->setTitle($this->faker->word())
                  ->setCompany($this->faker->word())
-                 ->setLocation($this->faker->text(100))
+                 ->setLocation($this->faker->address())
                  ->setDescription($this->faker->text(100))
                  ->setSalary(mt_rand(1, 1440))
                  ->setSchedule($this->faker->text(100))
-                 ->setIsApproved(mt_rand(0, 1) == 1 ? true : false)
-                 ->setIsPublished(mt_rand(0, 1) == 1 ? true : false);
+                 ->setIsApproved(mt_rand(0, 1) == 1 ? true : false);
                  for ($k = 0; $k < mt_rand(5, 5); $k++) {
                     $job->setAuthor($users[mt_rand(0, count($users) - 1)]);
                 }
-                //  ->setRecruiters($users[mt_rand(0, count($users) - 1)]);
                  for ($k = 0; $k < mt_rand(5, 5); $k++) {
                     $job->addCandidate($users[mt_rand(0, count($users) - 1)]); 
                 }

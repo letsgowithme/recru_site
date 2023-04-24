@@ -9,14 +9,14 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class RegistrationVoter extends Voter
+class UserVoter extends Voter
 {
 
   // const FILL_CAND = 'CANDIDAT_FILL';
   // const FILL_RECR = 'RECRUITER_FILL';
 
-	const EDIT = 'ROLE_EDIT';
-	const DELETE = 'ROLE_DELETE';
+	const EDIT = 'USER_EDIT';
+	const DELETE = 'USER_DELETE';
 
 	// private $security;
 	
@@ -63,7 +63,7 @@ class RegistrationVoter extends Voter
 	 
 	 // on verifie si user est admin
 	 if($this->security->isGranted('ROLE_ADMIN')) return true;
-
+	//  if($this->security->isGranted('ROLE_SUPER_ADMIN')) return true;
    // on verif les permissions
 	 switch($attribute){
 		  case self::EDIT:
@@ -76,11 +76,12 @@ class RegistrationVoter extends Voter
 						break;			
 	 }
 	}
+	
 
 	private function canEdit(){
 		return $this->security->isGranted('ROLE_ADMIN');
 	}
 	private function canDelete(){
-		return $this->security->isGranted('ROLE_ADMIN');
+		return $this->security->isGranted('ROLE_SUPER_ADMIN');
 	}
 }

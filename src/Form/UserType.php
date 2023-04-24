@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Repository\CompanyRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -67,10 +68,10 @@ class UserType extends AbstractType
                 ],
                 'multiple' => true,
                 'choices'  => [
-                    // 'Utilisateur' => 'ROLE_USER',
-                    'Candidat' => 'ROLE_CAND',
-                    'Recruteur' => 'ROLE_RECR',
-                    'Consultant' => 'ROLE_CONS',
+                    'Utilisateur' => 'ROLE_USER',
+                    'Candidat' => 'ROLE_CANDIDATE',
+                    'Recruteur' => 'ROLE_RECRUITER',
+                    'Consultant' => 'ROLE_CONSULTANT',
                     // 'Admin' => 'ROLE_ADMIN'
                 ]
             ])
@@ -111,44 +112,38 @@ class UserType extends AbstractType
                 ]
             ])
 
-            ->add('company', EntityType::class, [
+            ->add('company', TextareaType::class, [
                 'attr' => [
                     'class' => 'form-control'
                 ],
                 'label' => 'Companie',
-                'class' => Company::class,
-                'query_builder' => function (CompanyRepository $r) {
-                    return $r->createQueryBuilder('i')
-                        ->orderBy('i.title', 'ASC');
-                },
-                'choice_label' => 'Title',
-                'required' => false,
-                'multiple' => false,
-                // 'expanded' => true
+                'label_attr' => [
+                    'class' => 'form-label  mt-4'
+                ]
             ])
             
-            // ->add('location', TextareaType::class, [
-            //     'attr' => [
-            //         'class' => 'form-control'
-            //     ],
-            //     'label' => 'Adresse',
-            //     'label_attr' => [
-            //         'class' => 'form-label  mt-4'
-            //     ]
-            // ])
+            ->add('location', TextareaType::class, [
+                'attr' => [
+                    'class' => 'form-control'
+                ],
+                'label' => 'Adresse',
+                'label_attr' => [
+                    'class' => 'form-label  mt-4'
+                ]
+            ])
 
-            // ->add('isVerfied', CheckboxType::class, [
-            //     'attr' => [
-            //         'class' => 'form-check-input mt-4 mb-4',
-            //     ],
-            //     'required' => false,
-            //     'label' => 'Demande vérifiée ? ',
-            //     'mapped' => false,
-            //     'label_attr' => [
-            //         'class' => 'form-check-label mt-3 ms-3 text-dark fs-5'
-            //     ]
+            ->add('isVerfied', CheckboxType::class, [
+                'attr' => [
+                    'class' => 'form-check-input mt-4 mb-4',
+                ],
+                'required' => false,
+                'label' => 'Demande vérifiée ? ',
+                'mapped' => false,
+                'label_attr' => [
+                    'class' => 'form-check-label mt-3 ms-3 text-dark fs-5'
+                ]
                
-            // ])
+            ])
             ->add('submit', SubmitType::class, [
                 'attr' => [
                     'class' => 'btn btn-primary mt-4'

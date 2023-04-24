@@ -19,7 +19,8 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('/user')]
 class UserController extends AbstractController
-{
+{   
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/', name: 'user.index', methods: ['GET'])]
     public function index(UserRepository $userRepository): Response
     {
@@ -27,7 +28,7 @@ class UserController extends AbstractController
             'users' => $userRepository->findAll(),
         ]);
     }
-
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/new', name: 'user.new', methods: ['GET', 'POST'])]
     public function new(Request $request, UserRepository $userRepository): Response
     {

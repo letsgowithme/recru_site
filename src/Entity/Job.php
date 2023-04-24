@@ -40,10 +40,6 @@ class Job
     #[ORM\Column]
     private ?bool $isApproved = null;
 
-    #[ORM\Column]
-    private ?bool $isPublished = null;
-
-
     #[ORM\ManyToMany(targetEntity: User::class)]
     private Collection $candidates;
 
@@ -159,17 +155,6 @@ class Job
         return $this;
     }
 
-    public function isPublished(): ?bool
-    {
-        return $this->isPublished;
-    }
-
-    public function setIsPublished(bool $isPublished): self
-    {
-        $this->isPublished = $isPublished;
-
-        return $this;
-    }
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {

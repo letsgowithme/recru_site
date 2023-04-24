@@ -61,8 +61,7 @@ class JobCrudController extends AbstractCrudController
                 ->setLabel('Auteur'),
             BooleanField::new('isApproved')
                 ->setLabel('Approuvé ?'),
-            BooleanField::new('isPublished')
-                ->setLabel('Publié ?')
+           
         ];
     }
 }

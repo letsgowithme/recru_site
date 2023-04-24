@@ -25,10 +25,7 @@ security:
                 path: app_logout
                 # where to redirect after logout
                 # target: app_any_route
-            # form_login:
-                # login_path: security.login
-                # check_path: security.login
-            
+                     
           
 
             # activate different ways to authenticate
@@ -41,7 +38,7 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         # - { path: ^/admin/users, role: ROLE_ADMIN }
-        # - { path: ^/admin, role: ROLE_CONSULTANT }
+        - { path: ^/admin, role: ROLE_ADMIN }
       
         - { path: ^/profil, role: ROLE_USER }
         # - { path: ^/recruteur, role: ROLE_RECR}

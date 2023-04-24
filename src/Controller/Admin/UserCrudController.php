@@ -43,7 +43,7 @@ class UserCrudController extends AbstractCrudController
     
     public function configureFields(string $pageName): iterable
     {
-         $roles = ['ROLE_ADMIN', 'ROLE_CANDIDATE', 'ROLE_RECRUITER', 'ROLE_USER'];
+         $roles = ['ROLE_SUPER_ADMIN', 'ROLE_ADMIN', 'ROLE_CANDIDATE', 'ROLE_RECRUITER', 'ROLE_USER'];
     return [
     IdField::new('id')
     ->hideOnForm(),
@@ -65,10 +65,14 @@ class UserCrudController extends AbstractCrudController
   
     AssociationField::new('jobs')
     ->setLabel('Offres d\'emploi'),
-    AssociationField::new('company')
+    TextField::new('company')
     ->setLabel('Company'),
+    TextField::new('location')
+        ->setLabel('Adresse')
+        ->hideOnIndex(),
     ArrayField::new('roles')
             ->setLabel('Rôle'),
+        
     DateTimeField::new('createdAt')
     ->hideOnForm()
     ->setFormTypeOption('disabled', 'disabled'),

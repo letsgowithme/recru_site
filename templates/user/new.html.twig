@@ -3,8 +3,8 @@
 {% block title %}Créer l'utilisateur{% endblock %}
 
 {% block body %}
-<div class="container">
-    <h1>Créer l'utilisateur</h1>
+< class="container">
+    <h1>Créer le consultant</h1>
 {% for message in app.flashes('warning') %}
 			<div class="alert alert-warning mt-4">
 				{{ message }}
@@ -13,7 +13,7 @@
 
    {{ form_start(form) }}
 
-   {% if not app.user %}
+   {% if app.user and is_granted('ROLE_ADMIN') %} 
     
    
     <div class="form-group" style="color: rgb(13, 108, 149); font-size: 1.4rem;">
@@ -33,8 +33,7 @@
   <div class="form-group" style="font-size: 1.6rem;">
 			 <button type="submit" class="btn btn-primary">Envoyer</button>
 			</div>
-{% endif %}
- {# {% if is_granted('ROLE_CAND') %}
+
 		<div class="form-group" style="color: rgb(13, 108, 149); font-size: 1.4rem;">
 			{{ form_label(form.firstname) }}
 			{{ form_widget(form.firstname) }}
@@ -48,28 +47,8 @@
 			<div class="form-error">
 				{{ form_errors(form.lastname) }}
 			</div>
-		</div> #}
+		</div> 
 
-        {# upload pdf file with CV #}
-
-{# 
- {% elseif is_granted('ROLE_RECR') %}
-         <div class="form-group" style="color: rgb(13, 108, 149); font-size: 1.4rem;">
-			{{ form_label(form.company) }}
-			{{ form_widget(form.company) }}
-			<div class="form-error">
-				{{ form_errors(form.company) }}
-			</div>
-             <div class="form-group" style="color: rgb(13, 108, 149); font-size: 1.4rem;">
-			{{ form_label(form.location) }}
-			{{ form_widget(form.location) }}
-			<div class="form-error">
-				{{ form_errors(form.location) }}
-			</div>
-		</div> #}
-       
-        	
- {# {% elseif is_granted('ROLE_ADMIN') %}
   <div class="form-group" style="color: rgb(13, 108, 149); font-size: 1.4rem;">
 			{{ form_label(form.roles) }}
 			{{ form_widget(form.roles) }}
@@ -85,13 +64,13 @@
 				{{ form_errors(form.isVerified) }}
 			</div>
 
-            {% endif %} #}
+            {% endif %}
 			
 <br><br>
 			{{ form_end(form) }}
 <br>
 
-    <a href="{{ path('home') }}">Accueilt</a>
+    <a href="{{ path('home') }}">Accueil</a>
 
     </div>
 {% endblock %}

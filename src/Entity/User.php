@@ -36,7 +36,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $cvFilename = null;
 
     #[ORM\Column]
-    private array $roles = [];
+    private ?array $roles = [];
 
     private ?string $plainPassword = null;
 
@@ -59,13 +59,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(targetEntity: Recruiter::class, cascade: ['persist', 'remove'])]
     private ?Recruiter $recruiter = null;
 
-    #[ORM\OneToOne(targetEntity: Consultant::class, cascade: ['persist', 'remove'])]
-    private ?Consultant $consultant = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $company = null;
 
-
-    #[ORM\ManyToOne(inversedBy: 'users')]
-    #[ORM\JoinColumn(nullable: true)]
-    private ?Company $company = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $location = null;
 
     #[ORM\Column(type: 'string', length: 100, nullable: true)]
     private ?string $resetToken = null;
@@ -284,44 +282,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getConsultant(): ?Consultant
-    {
-        return $this->consultant;
-    }
-
-    public function setConsultant(Consultant $consultant): self
-    {
-        // set the owning side of the relation if necessary
-        if ($consultant->getUsers() !== $this) {
-            $consultant->setUsers($this);
-        }
-
-        $this->consultant = $consultant;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of Company
-     */
-    public function getCompany()
-    {
-        return $this->company;
-    }
-
-    /**
-     * Set the value of Company
-     *
-     * @return  self
-     */
-    public function setCompany($company)
-    {
-        $this->company = $company;
-
-        return $this;
-    }
-
-
 
     /**
      * Get the value of cvFilename
@@ -387,8 +347,48 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __toString()
     {
-        return $this->lastname;
+        return $this->email;
         
     }
 
+
+    /**
+     * Get the value of company
+     */ 
+    public function getCompany()
+    {
+        return $this->company;
+    }
+
+    /**
+     * Set the value of company
+     *
+     * @return  self
+     */ 
+    public function setCompany($company)
+    {
+        $this->company = $company;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of location
+     */ 
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * Set the value of location
+     *
+     * @return  self
+     */ 
+    public function setLocation($location)
+    {
+        $this->location = $location;
+
+        return $this;
+    }
 }

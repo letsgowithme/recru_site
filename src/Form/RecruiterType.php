@@ -10,27 +10,44 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class RecruiterType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-        ->add('company', EntityType::class, [
+        ->add('company', TextType::class, [
             'attr' => [
                 'class' => 'form-control'
             ],
             'label' => 'Companie',
-            'class' => Company::class,
-            'query_builder' => function (CompanyRepository $r) {
-                return $r->createQueryBuilder('i')
-                    ->orderBy('i.title', 'ASC');
-            },
-            'choice_label' => 'Title',
-            'required' => false,
-            'multiple' => false,
-            // 'expanded' => true
+            'label_attr' => [
+                'class' => 'form-label mt-4 text-dark fs-5',
+                'minLength' => '2',
+                'maxLength' => '255'
+            ],
+            'constraints' => [
+                new Assert\Length(['min' => 2, 'max' => 255]),
+                new Assert\NotBlank()
+            ]
         ])
+        ->add('location', TextType::class, [
+            'attr' => [
+                'class' => 'form-control'
+            ],
+            'label' => 'Adresse',
+            'label_attr' => [
+                'class' => 'form-label mt-4 text-dark fs-5',
+                'minLength' => '2',
+                'maxLength' => '255'
+            ],
+            'constraints' => [
+                new Assert\Length(['min' => 2, 'max' => 255]),
+                new Assert\NotBlank()
+            ]
+        ])
+
         ->add('submit', SubmitType::class, [
             'attr' => [
                 'class' => 'btn btn-primary mt-4'

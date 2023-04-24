@@ -3,7 +3,6 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Apply;
-use App\Entity\Company;
 use App\Entity\Job;
 use App\Entity\User;
 use App\Repository\JobRepository;
@@ -25,7 +24,7 @@ class DashboardController extends AbstractDashboardController
     }
     
  #[IsGranted('ROLE_ADMIN')]
- #[Route('/job', name: 'job.edit', methods: ['GET'])]
+ #[Route('/job', name: 'job.edit', methods: ['GET', 'POST'])]
  public function editJob(JobRepository $jobRepository): Response
  {
     return $this->render('job/edit.html.twig');
@@ -44,7 +43,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToDashboard('Tableau de bord', 'fa fa-home');
         yield MenuItem::linkToRoute('Voir le site', 'fas fa-list', 'home');
         yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-user', User::class);
-        yield MenuItem::linkToCrud('Companies', 'fas fa-seedling', Company::class);
         yield MenuItem::linkToCrud('Annonces', 'fas fa-seedling', Job::class);
         yield MenuItem::linkToCrud('Postulés', 'fas fa-seedling', Apply::class);
     }

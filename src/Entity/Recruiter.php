@@ -16,13 +16,16 @@ class Recruiter
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $company = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $location = null;
+
     #[ORM\OneToOne(targetEntity: User::class, inversedBy: 'recruiter', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\ManyToOne(inversedBy: 'recruiters')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Company $company = null;
 
    
     public function getId(): ?int
@@ -49,8 +52,13 @@ class Recruiter
 
         return $this;
     }
+  
+    
+
+  
+
     /**
-     * Get the value of Company
+     * Get the value of company
      */ 
     public function getCompany()
     {
@@ -58,7 +66,7 @@ class Recruiter
     }
 
     /**
-     * Set the value of Company
+     * Set the value of company
      *
      * @return  self
      */ 
@@ -68,7 +76,24 @@ class Recruiter
 
         return $this;
     }
-    
 
-  
+    /**
+     * Get the value of location
+     */ 
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * Set the value of location
+     *
+     * @return  self
+     */ 
+    public function setLocation($location)
+    {
+        $this->location = $location;
+
+        return $this;
+    }
 }

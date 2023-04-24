@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Apply;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
@@ -15,7 +16,16 @@ class ApplyCrudController extends AbstractCrudController
     {
         return Apply::class;
     }
-
+    public function configureCrud(Crud $crud): Crud
+    {
+    return $crud
+                ->setSearchFields(['lastname'])
+                ->setPageTitle("index", "Postulé")
+                
+               
+    ;
+    }
+    
     
     public function configureFields(string $pageName): iterable
     {

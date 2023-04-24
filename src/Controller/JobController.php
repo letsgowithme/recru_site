@@ -22,10 +22,10 @@ class JobController extends AbstractController
      * @param JobRepository $jobRepository
      * @return Response
      */
-    #[Route('/', name: 'job.all', methods: ['GET'])]
+    #[Route('/', name: 'job.index', methods: ['GET'])]
     public function all(JobRepository $jobRepository): Response
     {
-        return $this->render('job/all.html.twig', [
+        return $this->render('job/index.html.twig', [
             'jobs' => $jobRepository->findAll(),
         ]);
     }
@@ -35,20 +35,6 @@ class JobController extends AbstractController
      * @return Response
      */
    
-    #[Route('/index', name: 'job.index', methods: ['GET'])]
-    #[IsGranted('ROLE_USER')]
-    public function index(JobRepository $repository): Response
-    {
-        $jobs = $repository->findAll();
-        return $this->render('job/index.html.twig', [
-            'jobs' => $jobs,
-        ]);
-    }
-      /**
-     * Show the jobs if user is connected
-     * @param JobRepository $repository
-     * @return Response
-     */
    
      #[Route('/annonces', name: 'job.annonces', methods: ['GET'])]
      #[IsGranted('ROLE_RECRUITER')]
