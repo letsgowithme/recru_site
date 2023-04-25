@@ -44,6 +44,8 @@ li {
 .truc {
   background-color: rgba(226, 226, 238, 0.921);
   color: rgb(47, 43, 43);
+  justify-content: space-between;
+  align-items:baseline;
 }
 
 }

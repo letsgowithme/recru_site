@@ -6,7 +6,6 @@ use App\Entity\Apply;
 use App\Entity\Job;
 use App\Entity\User;
 use App\Repository\JobRepository;
-use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;

@@ -28,6 +28,9 @@ class Job
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $location = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $city = null;
+
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
@@ -244,4 +247,24 @@ class Job
     }
     
 
+
+    /**
+     * Get the value of city
+     */ 
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    /**
+     * Set the value of city
+     *
+     * @return  self
+     */ 
+    public function setCity($city)
+    {
+        $this->city = $city;
+
+        return $this;
+    }
 }

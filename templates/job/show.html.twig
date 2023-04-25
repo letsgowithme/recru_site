@@ -27,7 +27,7 @@
 			<p class="fs-5 mt-3">{{ job.schedule|raw }}</p>
 		</h4>
 		<h4 class="mt-3">Créé:</h4>
-		<p class="fs-4">{{ job.createdAt ? job.createdAt|date('Y-m-d H:i:s') : '' }}</p>
+		<p class="fs-4">{{ job.createdAt ? job.createdAt|date('d/m/Y') : '' }}</p>
 
 		<h4 class="mt-3 mb-3 hidden">Par :
 			<p class="fs-5 mt-3">{{ job.author }}
@@ -35,8 +35,10 @@
 				<strong>{{ job.company|raw }}</striong>
 			</p>
 		</h5>
-	{% if app.user  %}
+	{% if app.user and app.user.isVerified is same as true %}
 {% include "partials/_apply.html.twig" %}
+{% else %}
+<p>Pour postuler veuillez-vous connecter</p>
 {% endif %}
 	
 

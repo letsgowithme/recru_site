@@ -68,8 +68,9 @@ class AppFixtures extends Fixture
              $job->setTitle($this->faker->word())
                  ->setCompany($this->faker->word())
                  ->setLocation($this->faker->address())
+                 ->setCity($this->faker->city())
                  ->setDescription($this->faker->text(100))
-                 ->setSalary(mt_rand(1, 1440))
+                 ->setSalary(mt_rand(1500, 5000))
                  ->setSchedule($this->faker->text(100))
                  ->setIsApproved(mt_rand(0, 1) == 1 ? true : false);
                  for ($k = 0; $k < mt_rand(5, 5); $k++) {
