@@ -11,27 +11,27 @@
 						<span class="visually-hidden">(current)</span>
 					</a>
 				</li>
-					<li class="nav-item">
-			<a class="nav-link fs-5 fw-bold" href="{{ path('job.index') }}">Offres d'emploi</a>
+				<li class="nav-item">
+					<a class="nav-link fs-5 fw-bold" href="{{ path('job.index') }}">Offres d'emploi</a>
 				</li>
 				{% if app.user %}
-								{% if is_granted('ROLE_RECRUITER') %}
-				<li class="nav-item">
-						<a class="nav-link fs-5 fw-bold" href="{{ path('job.annonces') }}">Mes annonces</a>
-				</li>
-			  	{% endif %}
-			
+					{% if is_granted('ROLE_RECRUITER') %}
+						<li class="nav-item">
+							<a class="nav-link fs-5 fw-bold" href="{{ path('job.annonces') }}">Mes annonces</a>
+						</li>
+					{% endif %}
+
 				{% endif %}
 			</ul>
 			{% if not app.user %}
-			<ul class="navbar-nav me-1 d-lg-flex align-items-lg-end">
-				<li class="nav-item me-2 fs-5 fw-bold lg-ms-4">
-					<a class="nav-link" href="{{ path('security.login')}}">Connexion</a>
-				</li>
-				<li class="nav-item me-4 fs-5 fw-bold">
-					<a class="nav-link" href="{{ path('app_register')}}">Inscription</a>
-				</li>
-			</ul>
+				<ul class="navbar-nav me-1 d-lg-flex align-items-lg-end">
+					<li class="nav-item me-2 fs-5 fw-bold lg-ms-4">
+						<a class="nav-link" href="{{ path('security.login')}}">Connexion</a>
+					</li>
+					<li class="nav-item me-4 fs-5 fw-bold">
+						<a class="nav-link" href="{{ path('app_register')}}">Inscription</a>
+					</li>
+				</ul>
 			{% endif %}
 		</div>
 	</div>
@@ -39,7 +39,9 @@
 		<ul class="navbar-nav me-auto">
 			{% if app.user %}
 				<li class="nav-item dropdown" style="margin-right: 5rem;">
-					<a class="nav-link dropdown-toggle fs-5 fw-bold ms-sm-5 ms-lg-1" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="color: white;"> {{ app.user.firstname ? app.user.firstname : app.user.email}} {{ app.user.lastname ? app.user.lastname : null}}</a>
+					<a class="nav-link dropdown-toggle fs-5 fw-bold ms-sm-5 ms-lg-1" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="color: white;">
+						{{ app.user.firstname ? app.user.firstname : app.user.email}}
+						{{ app.user.lastname ? app.user.lastname : null}}</a>
 					<div class="dropdown-menu" style="margin-left: 5%;">
 						{% if 'ROLE_ADMIN' in app.user.roles %}
 							<a class="dropdown-item fw-bold" href="/admin">Tableau de bord</a>
@@ -49,21 +51,21 @@
 							<a class="dropdown-item fw-bold" href="/admin">Tableau de bord</a>
 							<div class="dropdown-divider"></div>
 						{% endif %}
-							{% if app.user and app.user.isverified is same as true %}
-								{% if is_granted('ROLE_CANDIDATE') %}
+						{% if app.user and app.user.isverified is same as true %}
+							{% if is_granted('ROLE_CANDIDATE') %}
 
-						<a class="dropdown-item fw-bold" href="{{ path('user.candidate_edit', {id : app.user.id}) }}">Modifier le profil</a>
-						<div class="dropdown-divider"></div>
-					{% else %}
-						<a class="dropdown-item fw-bold" href="{{ path('user.recruiter_edit', {id : app.user.id}) }}">Modifier le profil</a>
-						<div class="dropdown-divider"></div>
-						{% endif %}
-					
+								<a class="dropdown-item fw-bold" href="{{ path('user.candidate_edit', {id : app.user.id}) }}">Modifier le profil</a>
+								<div class="dropdown-divider"></div>
+							{% else %}
+								<a class="dropdown-item fw-bold" href="{{ path('user.recruiter_edit', {id : app.user.id}) }}">Modifier le profil</a>
+								<div class="dropdown-divider"></div>
+							{% endif %}
+
 						{% endif %}
 						<a class="dropdown-item fw-bold" href="{{ path('app_logout')}}">Déconnexion</a>
-										{% endif %}
-											</div>
+					{% endif %}
 				</li>
+			</div>
+		</li>
 	</ul>
-</div>
-</div></nav> 
+</div></div></nav>
