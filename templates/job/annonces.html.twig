@@ -15,21 +15,21 @@
 		{% endif %}
 
 		{% if app.user %}
-			<h1 class="text-center text-light bg-primary mb-4" style="border-radius: 15px; padding: 10px 2px; width: auto; position: absolute; top: 15%; left: 50%; transform: translateX(-50%); padding: 10px;">Mes annonces
+			<h1 class="text-center text-light bg-primary mb-4" style="border-radius: 15px; padding: 10px 2px; width: auto; position: absolute; top: 12%; left: 50%; transform: translateX(-50%); padding: 10px;" id="up">Mes annonces
 			</h1>
 			<button class="btn text-light bg-primary mb-4" style="border-radius: 15px; padding: 10px 2px; width: auto; position: absolute; top: 15%; left: 85%; transform: translateX(-50%); padding: 10px;">
 				<a href="{{ path('job.new') }}" class="text-decoration-none text-white">Créer une annonce</a>
 			</button>
 		{% endif %}
 
-		<div class="d-flex justify-content-between flex-wrap">
+		<div class="d-flex justify-content-between flex-wrap mt-4">
 			{% if app.user.jobs and app.user.isVerified is same as true %}
 				{% for job in jobs %}
-					<div class="card border-primary mb-3 me-3" style="width: 20rem;">
-						<div class="card-header">Offre numéro
+					<div class="card border-primary mb-3 me-3 bg-light" style="width: 20rem;">
+						<div class="card-header text-dark">Offre numéro
 							{{ job.id }}</div>
 						<div class="card-body">
-							<h4 class="card-title">
+							<h4 class="card-title text-dark">
 								<a href="{{ path('job.show', {id: job.id}) }}">{{ job.title }}</a>
 							</h4>
 							<p class="card-text">{{ job.description|raw }}</p>
@@ -43,4 +43,6 @@
 			</div>
 		{% endif %}
 	</div>
+		<div class="text-center mb-4">
+<button class="btn btn-info" type="button"><a class="fs-4 text-light" href="#up" style="color: #d4c54c; text-decoration: none;">Ver le haut</a></div>
 {% endblock %}

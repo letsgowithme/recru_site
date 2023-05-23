@@ -8,6 +8,7 @@ use App\Repository\CompanyRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -23,7 +24,7 @@ class RecruiterType extends AbstractType
             ],
             'label' => 'Companie',
             'label_attr' => [
-                'class' => 'form-label mt-4 text-dark fs-5',
+                'class' => 'form-label mt-4 text-light fs-5',
                 'minLength' => '2',
                 'maxLength' => '255'
             ],
@@ -38,7 +39,7 @@ class RecruiterType extends AbstractType
             ],
             'label' => 'Adresse',
             'label_attr' => [
-                'class' => 'form-label mt-4 text-dark fs-5',
+                'class' => 'form-label mt-4 text-light fs-5',
                 'minLength' => '2',
                 'maxLength' => '255'
             ],

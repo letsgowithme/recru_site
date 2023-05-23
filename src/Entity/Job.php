@@ -57,6 +57,8 @@ class Job
 
     #[ORM\OneToMany(mappedBy: 'job', targetEntity: Apply::class)]
     private Collection $applies;
+    // #[ORM\OneToMany(mappedBy: 'job', targetEntity: Candidat::class)]
+    // private Collection $candidats;
 
 
     /**
@@ -245,6 +247,7 @@ class Job
 
         return $this;
     }
+    
     
 
 

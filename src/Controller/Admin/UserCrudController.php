@@ -32,7 +32,7 @@ class UserCrudController extends AbstractCrudController
                 ->setEntityLabelInSingular('Utilisateur')
                 ->setSearchFields(['lastname'])
                 ->setPageTitle("index", "Administration des utilisateurs")
-                ->setDefaultSort(['lastname' => 'asc'])
+                ->setDefaultSort(['id' => 'asc'])
                 ->setPageTitle(pageName:Crud::PAGE_INDEX, title: 'Utilisateurs')
                 ->setPageTitle(pageName:Crud::PAGE_NEW, title: 'Créer un Utilisateur')
                 ->setPageTitle(pageName:Crud::PAGE_EDIT, title: 'Modifier l\'Utilisateur')
@@ -55,6 +55,7 @@ class UserCrudController extends AbstractCrudController
     ImageField::new('cvFilename')
     ->setFormType(FileUploadType::class)
     ->setUploadDir('/public/uploads/cv')
+    ->setBasePath('/uploads/cv')
     ->setRequired(false)
     ->setLabel('CV'),
     TextField::new('plainPassword', 'password')

@@ -5,39 +5,41 @@
 {% block body %}
 	<div class="container mt-4 mb-4">
 		<div class="mt-4">{% include "partials/_bg_all_jobs_img.html.twig" %}"</div>
-		<h1 class="text-center text-light mb-4">Offres d'emploi</h1>
+		<h1 class="text-center text-light mb-4" id="up">Offres d'emploi</h1>
 		<div class="d-flex justify-content-center flex-wrap">
-			{% for job in jobs %}
+			{% for job in pagination %}
 				{% if job.isApproved is same as true %}
-
-
-					<div class="card border-primary mb-3 me-3 offer_card" style="width: 70%;  background-color: rgba(226, 226, 238, 0.921);">
+					<div class="card border-primary mb-3 me-3 offer_card" style="width: 60%;  background-color: rgba(226, 226, 238, 0.921);">
 						<div class="card-header">Offre numéro
 							{{ job.id }}
 						</div>
 						<div class="card-body">
-							<h3 class="card-title text-capitalize" style="color: blue;">
+							<h4 class="card-title text-capitalize" style="color: blue;">
 								{{ job.title }}
-							</h3>
-							<h4 class="card-text text-capitalize">Companie: {{ job.company|raw }}</h4>
-
+							</h4>
+							<h5 class="card-text text-capitalize">Companie:
+								{{ job.company|raw }}</h5>
 							<p class="card-text text-capitalize">
-							{# <img src="{{ path('/assets/images/location-dot-solid.svg') }}" /> #}
-							{% include "partials/location-dot-solid.svg.html.twig" %}
+								{% include "partials/location-dot-solid.svg.html.twig" %}
 								{{ job.city }}</p>
 							<div style="display: flex; justify-content: space-between;
-									  align-items:baseline; ">
-								<h5 class="mt-3 ms-2 text-dark">Créé le:
-									{{ job.createdAt ? job.createdAt|date('Y-m-d') : '' }}</h5>
-								<a href="{{ path('job.show', {id: job.id}) }}" class="fs-5">Voir les détails</a>
+																	  align-items:baseline;" class="flex-sm-column flex-lg-row">
+								<h6 class="mt-3 ms-2 text-dark">Créé le:
+									{{ job.createdAt ? job.createdAt|date('Y-m-d') : '' }}</h6>
+								<a href="{{ path('job.show', {id: job.id}) }}" class="fs-6">Voir les détails</a>
 							</div>
-
 						</div>
 					</div>
 				{% endif %}
 			{% endfor %}
-
+		</div>
+		<div class="text-center fs-5" style="margin-left: 16%;">
+			{{ knp_pagination_render(pagination) }}
 		</div>
 	</div>
-	<br><br><br>
-{% endblock %}
+	<br>
+	<div class="text-center mb-4">
+		<button class="btn btn-info" type="button">
+			<a class="fs-4 text-light" href="#up" style="color: #d4c54c; text-decoration: none;">Ver le haut</a>
+		</div>
+	{% endblock %}

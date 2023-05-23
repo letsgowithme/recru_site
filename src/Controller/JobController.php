@@ -8,6 +8,7 @@ use App\Form\ApplyType;
 use App\Form\JobType;
 use App\Repository\JobRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,10 +24,19 @@ class JobController extends AbstractController
      * @return Response
      */
     #[Route('/', name: 'job.index', methods: ['GET'])]
-    public function all(JobRepository $jobRepository): Response
+    public function all(JobRepository $jobRepository, Request $request, PaginatorInterface $paginator): Response
     {
+        // $jobs = $jobRepository->findAll();
+
+        $pagination = $paginator->paginate(
+            $jobRepository->paginationQuery(),
+            $request->query->get('page', 1),
+            10
+
+        );
         return $this->render('job/index.html.twig', [
-            'jobs' => $jobRepository->findAll(),
+        //    'jobs' => $jobs,
+           'pagination' => $pagination
         ]);
     }
      /**

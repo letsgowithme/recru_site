@@ -12,6 +12,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Form\Type\FileUploadType;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class CandidateCrudController extends AbstractCrudController
 {
@@ -47,14 +48,14 @@ class CandidateCrudController extends AbstractCrudController
     ImageField::new('cvFilename')
     ->setFormType(FileUploadType::class)
     ->setUploadDir('/public/uploads/cv')
-    ->setRequired(false)
-    ->hideOnForm() 
-    ->setLabel('CV'),
+    ->setBasePath('/uploads/cv')
+    ->hideOnIndex()
+    ->setRequired(false) 
+    ->setLabel('CV')
+    ->setRequired($pageName !== Crud::PAGE_EDIT),
     DateTimeField::new('createdAt')
     ->hideOnForm()
     ->setFormTypeOption('disabled', 'disabled'),
-    // BooleanField::new('isVerified')
-    //             ->setLabel('Approuvé ?')
     ];
     }
 }

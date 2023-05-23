@@ -13,6 +13,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\File;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class CandidateType extends AbstractType
 {
@@ -59,7 +60,7 @@ class CandidateType extends AbstractType
        
             ->add('cvFilename', FileType::class, [
                 'attr' => [
-                    'class' => 'ms-4'
+                    'class' => 'ms-4 me-4'
                 ],
                 'label' => 'CV (PDF file)',
 

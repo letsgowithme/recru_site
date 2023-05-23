@@ -63,7 +63,7 @@ class AppFixtures extends Fixture
  
          //Jobs
          $jobs = [];
-         for ($i = 0; $i < 5; $i++) {
+         for ($i = 0; $i < 25; $i++) {
              $job = new Job();
              $job->setTitle($this->faker->word())
                  ->setCompany($this->faker->word())

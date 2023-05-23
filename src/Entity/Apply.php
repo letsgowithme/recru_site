@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-// #[UniqueEntity(fields: ['candidat'], message: 'There is already an account')]
+#[UniqueEntity(fields: ['candidate'], message: 'Vous avez déjà postuler pour cette annonce')]
 #[ORM\Entity(repositoryClass: ApplyRepository::class)]
 class Apply
 {
