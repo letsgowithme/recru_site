@@ -24,7 +24,7 @@ class JobType extends AbstractType
                 ],
                 'label' => 'L\'intitulé du post',
                 'label_attr' => [
-                    'class' => 'form-label mt-4 text-light fs-5',
+                    'class' => 'form-label mt-4 text-dark fs-5',
                     'minLength' => '2',
                     'maxLength' => '255'
                 ],
@@ -39,7 +39,7 @@ class JobType extends AbstractType
                 ],
                 'label' => 'Companie',
                 'label_attr' => [
-                    'class' => 'form-label mt-4 text-light fs-5',
+                    'class' => 'form-label mt-4 text-dark fs-5',
                     'minLength' => '2',
                     'maxLength' => '255'
                 ],
@@ -55,7 +55,7 @@ class JobType extends AbstractType
                 ],
                 'label' => 'Adresse',
                 'label_attr' => [
-                    'class' => 'form-label mt-4 text-light fs-5'
+                    'class' => 'form-label mt-4 text-dark fs-5'
                 ],
                 'constraints' => [
                     new Assert\NotBlank()
@@ -67,7 +67,7 @@ class JobType extends AbstractType
                 ],
                 'label' => 'Ville',
                 'label_attr' => [
-                    'class' => 'form-label mt-4 text-light fs-5',
+                    'class' => 'form-label mt-4 text-dark fs-5',
                     'minLength' => '2',
                     'maxLength' => '255'
                 ],
@@ -82,7 +82,7 @@ class JobType extends AbstractType
                 ],
                 'label' => 'Description',
                 'label_attr' => [
-                    'class' => 'form-label mt-4 text-light fs-5'
+                    'class' => 'form-label mt-4 text-dark fs-5'
                 ],
                 'constraints' => [
                     new Assert\NotBlank()
@@ -96,7 +96,7 @@ class JobType extends AbstractType
                 ],
                 'label' => 'Salaire',
                 'label_attr' => [
-                    'class' => 'form-label mt-4 text-light fs-5'
+                    'class' => 'form-label mt-4 text-dark fs-5'
                 ],
                 'constraints' => [
                     new Assert\Positive()
@@ -108,7 +108,7 @@ class JobType extends AbstractType
                 ],
                 'label' => 'Horaires',
                 'label_attr' => [
-                    'class' => 'form-label mt-4 text-light fs-5'
+                    'class' => 'form-label mt-4 text-dark fs-5'
                 ],
                 'constraints' => [
                     new Assert\NotBlank()
@@ -121,7 +121,7 @@ class JobType extends AbstractType
                 'required' => false,
                 'label' => 'Approuvé ? ',
                 'label_attr' => [
-                    'class' => 'form-check-label mt-3 ms-3 text-light fs-5 mb-4'
+                    'class' => 'form-check-label mt-3 ms-3 text-dark fs-5 mb-4'
                 ],
                 'constraints' => [
                     new Assert\NotNull()

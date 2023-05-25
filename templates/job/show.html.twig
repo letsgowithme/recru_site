@@ -6,16 +6,12 @@
 {% block body %}
 	<div class="container">
 		{% for message in app.flashes('success') %}
-			<div class="alert alert-success">
+			<div class="alert alert-success mt-4">
 				{{ message }}
 			</div>
 		{% endfor %}
-		{% for message in app.flashes('error') %}
-			<div class="alert alert-error">
-				{{ message }}
-			</div>
-		{% endfor %}
-		<h1 class="mt-4 mb-4 text-capitalize">{{ job.title }}</h1>
+	
+		<h1 class="mt-4 mb-4 text-capitalize" style="padding-top: 3%;">{{ job.title }}</h1>
 		<h4 class="mt-3">Company:</h4>
 		<p class="fs-5  text-capitalize">{{ job.company|raw }}</p>
 		<h4 class="mt-3">Location:</h4>
@@ -29,7 +25,7 @@
 		<h4 class="mt-3 mb-3">Emploi de temps :
 			<p class="fs-5 mt-3">{{ job.schedule|raw }}</p>
 		</h4>
-		<h4 class="mt-3">Créé:</h4>
+		<h4 class="mt-3">Posté:</h4>
 		<p class="fs-4">{{ job.createdAt ? job.createdAt|date('d/m/Y') : '' }}</p>
 		<h4 class="mt-3 mb-3 hidden">Par :
 			<p class="fs-5 mt-3">{{ job.author }}
@@ -42,9 +38,24 @@
 		{% else %}
 			<p>Pour postuler veuillez-vous connecter</p>
 		{% endif %}
+		{% if is_granted('ROLE_RECRUITER') %}
+		<div>
+		
+		<button class="btn btn-info fs-5 fw-bold mb-5">
+			<a href="{{ path('job.edit', {id: job.id}) }}" class="text-decoration-none text-light">Rédiger l'annonce</a>
+		</button>
+		</div>
+			<div>
+		<button class="btn btn-primary fs-5 fw-bold mb-5">
+			<a href="{{ path('job.annonces') }}" class="text-decoration-none text-light">Vers la liste de mes annonces</a>
+		</button>
+		</div>
+		{% endif %}
+		<div>
 		<button class="btn btn-primary fs-5 fw-bold mb-5">
 			<a href="{{ path('job.index') }}" class="text-decoration-none text-light">Vers la liste d'offres d'emploi</a>
 		</button>
+	
 		<br>
 		<br>
 

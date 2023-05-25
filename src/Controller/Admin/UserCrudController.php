@@ -57,6 +57,11 @@ class UserCrudController extends AbstractCrudController
     ->setUploadDir('/public/uploads/cv')
     ->setBasePath('/uploads/cv')
     ->setRequired(false)
+    ->hideOnIndex()
+    ->setFormTypeOptions(['attr' => [
+        'accept' => 'application/pdf'
+    ]
+    ])
     ->setLabel('CV'),
     TextField::new('plainPassword', 'password')
         ->setFormType(PasswordType::class)

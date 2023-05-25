@@ -68,7 +68,8 @@ class RegistrationFormType extends AbstractType
                 'multiple' => true,
                 'choices'  => [
                     'Candidat' => 'ROLE_CANDIDATE',
-                    'Recruteur' => 'ROLE_RECRUITER'  
+                    'Recruteur' => 'ROLE_RECRUITER',
+                    'Consultant' => 'ROLE_CONSULTANT'  
                 ]
             ])
              

@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 
-#[UniqueEntity(fields: ['title'], message: 'There is already an offer with this name')]
+// #[UniqueEntity(fields: ['id'], message: 'Cet id était déjà utilisé')]
 #[ORM\Entity(repositoryClass: JobRepository::class)]
 class Job
 {
@@ -57,8 +57,6 @@ class Job
 
     #[ORM\OneToMany(mappedBy: 'job', targetEntity: Apply::class)]
     private Collection $applies;
-    // #[ORM\OneToMany(mappedBy: 'job', targetEntity: Candidat::class)]
-    // private Collection $candidats;
 
 
     /**

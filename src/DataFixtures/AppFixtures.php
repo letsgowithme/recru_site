@@ -28,25 +28,26 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         // Users
-        $users = [];
+        // $users = [];
 
-        $super_admin = new User();
-        $super_admin->setLastname('Administrateur')
-               ->setEmail('admin@recru.fr')
-               ->setRoles(['ROLE_SUPER_ADMIN'])
-               ->setPlainPassword('password');
-            
-               $users[] = $super_admin;
-           $manager->persist($super_admin);
+        // $super_admin = new User();
+        // $super_admin->setLastname('Administrateur')
+        //        ->setEmail('admin@recru.fr')
+        //        ->setRoles(['ROLE_SUPER_ADMIN'])
+        //        ->setPlainPassword('password')
+        //        ->setIsVerified(true)
+        //        ;
+        //        $users[] = $super_admin;
+        //    $manager->persist($super_admin);
            
-           $admin = new User();
-           $admin->setLastname('Consultant')
-                  ->setEmail('consult@recru.fr')
-                  ->setRoles(['ROLE_ADMIN'])
-                  ->setPlainPassword('password');
+        //    $admin = new User();
+        //    $admin->setLastname('Consultant')
+        //           ->setEmail('consult@recru.fr')
+        //           ->setRoles(['ROLE_ADMIN'])
+        //           ->setPlainPassword('password');
                
-                  $users[] = $admin;
-              $manager->persist($admin);
+        //           $users[] = $admin;
+        //       $manager->persist($admin);
 
 
         for ($j = 0; $j < 10; $j++) {
@@ -63,7 +64,7 @@ class AppFixtures extends Fixture
  
          //Jobs
          $jobs = [];
-         for ($i = 0; $i < 25; $i++) {
+         for ($i = 0; $i < 10; $i++) {
              $job = new Job();
              $job->setTitle($this->faker->word())
                  ->setCompany($this->faker->word())
@@ -82,23 +83,7 @@ class AppFixtures extends Fixture
                
              $jobs[] = $job;
              $manager->persist($job);
-         }
-          //Comments
-        // $applies = [];
-        // foreach ($jobs as $job) {
-        // for ($n = 0; $n < 5; $n++) {
-        //     $apply = new Comment();
-        //     $apply
-        //             ->setisApproved(mt_rand(0, 3) === 0 ? false : true)
-        //             ->setCandidate($users[mt_rand(0, count($users) - 1)])
-        //             ->setJob($job);
-
-        //     $manager->persist($apply);
-        //     $job->addComment($apply);
-        // }
-        // }
-         
-        
+         }    
  
 
         $manager->flush();

@@ -13,6 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/job')]
@@ -31,7 +32,7 @@ class JobController extends AbstractController
         $pagination = $paginator->paginate(
             $jobRepository->paginationQuery(),
             $request->query->get('page', 1),
-            10
+            5
 
         );
         return $this->render('job/index.html.twig', [
@@ -67,9 +68,18 @@ class JobController extends AbstractController
      */
     #[IsGranted('ROLE_RECRUITER')]
     #[Route('/new', name: 'job.new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $manager): Response
+    public function new(Request $request, EntityManagerInterface $manager,
+    UserInterface $user,): Response
     {
         $job = new Job();
+        if($user) {
+            $user = $job->getAuthor();
+         if(($this->getUser()->getCompany())) {
+            $job->setCompany($this->getUser()->getCompany());
+         } 
+          
+        
+        }
         $form = $this->createForm(JobType::class, $job);
         $form->handleRequest($request);
 
@@ -106,7 +116,6 @@ class JobController extends AbstractController
           Job $job,
           Request $request,
           EntityManagerInterface $manager,
-          JobRepository $repository
       ): Response {
         
 
@@ -119,6 +128,7 @@ class JobController extends AbstractController
           
         $formApply->handleRequest($request);
           
+        $error = $formApply->getErrors();
   
           /* form Apply */
   
@@ -136,7 +146,8 @@ class JobController extends AbstractController
          
           return $this->render('job/show.html.twig', [
               'job' => $job,
-              'formApply' => $formApply->createView()
+              'formApply' => $formApply->createView(),
+              'error' => $error
   
           ]);
       }

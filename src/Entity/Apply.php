@@ -7,7 +7,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-#[UniqueEntity(fields: ['candidate'], message: 'Vous avez déjà postuler pour cette annonce')]
+#[UniqueEntity(
+    fields: ['candidate', 'job'],
+    errorPath: 'candidate',
+    message: 'Vous avez déjà postulé pour cette annonce !'
+)]
+// #[UniqueEntity(fields: ['candidate'], message: 'Vous avez déjà postuler pour cette annonce')]
 #[ORM\Entity(repositoryClass: ApplyRepository::class)]
 class Apply
 {
@@ -27,11 +32,11 @@ class Apply
     private \DateTimeImmutable $createdAt;
 
   
-    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\ManyToOne(inversedBy: "applies")]
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private ?User $candidate = null;
 
-    #[ORM\ManyToOne(targetEntity: Job::class, inversedBy: 'applies')]
+    #[ORM\ManyToOne(inversedBy: 'applies')]
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private ?Job $job = null;
 

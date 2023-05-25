@@ -10,6 +10,7 @@
 						<button class="btn bg-primary text-light mb-4" type="submit" id="button-addon2">
 							Postuler
 						</button>
+							<div style="position: absolute; background-color: #ff8000; top: 18%; padding: 15px; width: 75%;" class="apply_error">{{ form_errors(formApply) }}</div>
 						{{ form_end(formApply) }}
 
 					</div>
@@ -39,3 +40,4 @@
 		{% endfor %}
 	</ol>
 {% endif %}
+
