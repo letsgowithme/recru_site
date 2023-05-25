@@ -13,9 +13,9 @@
 		{% endfor %}
 		{% if app.user.isVerified is same as false %}
 			<h2 class="text-center mt-1 mb-2">Votre demande d'inscription est en cours d'approuvement. Veuillez-vous connecter ultérieurement.</h2>
-		{% endif %}
+		{% else %}
 
-		{% if app.user %}
+		
 		<div class="d-flex flex-wrap justify-content-between">
 			<h1 class="text-center mb-4 page_title page_title_annonces px-4 bg-light" 
 			style="color: #022a67;"

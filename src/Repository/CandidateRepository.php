@@ -39,6 +39,7 @@ class CandidateRepository extends ServiceEntityRepository
         }
     }
 
+
 //    /**
 //     * @return Candidat[] Returns an array of Candidat objects
 //     */

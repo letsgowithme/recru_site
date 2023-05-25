@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Apply;
+use App\Entity\Candidate;
 use App\Entity\Job;
 use App\Entity\User;
 use App\Repository\JobRepository;
@@ -42,6 +43,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToDashboard('Tableau de bord', 'fa fa-home');
         yield MenuItem::linkToRoute('Voir le site', 'fas fa-list', 'home');
         yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-user', User::class);
+        yield MenuItem::linkToCrud('Candidats', 'fas fa-seedling', Candidate::class);
         yield MenuItem::linkToCrud('Annonces', 'fas fa-seedling', Job::class);
         yield MenuItem::linkToCrud('Postulés', 'fas fa-seedling', Apply::class);
     }
