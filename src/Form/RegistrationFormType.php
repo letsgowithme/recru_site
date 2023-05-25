@@ -62,7 +62,7 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('roles', ChoiceType::class, [
                 'attr' => [
-                    'class' => 'form-control ms-4 mb-4'
+                    'class' => 'form-control mb-4'
                 ],
                 'label' => 'Vous êtes: ',
                 'multiple' => true,
@@ -73,23 +73,13 @@ class RegistrationFormType extends AbstractType
                 ]
             ])
              
-            // ->add('isVerfied', CheckboxType::class, [
-            //     'attr' => [
-            //         'class' => 'form-check-input mt-4 mb-4 hidden',
-            //     ],
-            //     'required' => false,
-            //     'label' => 'Demande vérifiée ? ',
-            //     'mapped' => false,
-            //     'label_attr' => [
-            //         'class' => 'form-check-label mt-3 text-dark fs-5 hidden'
-            //     ]
-               
-            // ])
+        
             ->add('submit', SubmitType::class, [
                 'attr' => [
                     'class' => 'btn btn-primary mt-4'
                 ],
-                 'label' => 'Envoyer la demande d \'inscription'
+                 'label' => 'Envoyer la demande d \'inscription',
+                
         ])
         ;
     }

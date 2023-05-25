@@ -171,7 +171,7 @@ class JobController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $repository->save($job, true);
 
-            return $this->redirectToRoute('job.index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('job.show', ['id' => $job->getId()]);
         }
 
         return $this->render('job/edit.html.twig', [

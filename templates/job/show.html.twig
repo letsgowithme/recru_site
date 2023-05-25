@@ -6,12 +6,25 @@
 {% block body %}
 	<div class="container">
 		{% for message in app.flashes('success') %}
-			<div class="alert alert-success mt-4">
+			<div class="alert alert-success mt-4" style="z-index: 3; padding: 15px;">
 				{{ message }}
 			</div>
 		{% endfor %}
+
+	<div class="d-flex justify-content-between mt-5 mb-4" style="padding-top: 4%;">
+	<h1 class=" text-capitalize">{{ job.title }}</h1>
+	{% if is_granted('ROLE_RECRUITER') %}
+<div>
+		
+			<a href="{{ path('job.annonces') }}" class="text-light mt-lg-3 fs-4 bg-primary p-2">Mes annonces</a>
 	
-		<h1 class="mt-4 mb-4 text-capitalize" style="padding-top: 3%;">{{ job.title }}</h1>
+		</div>
+	{% else %}
+<a href="{{ path('job.index') }}" class="text-light mt-lg-3 fs-4 bg-primary p-2" >Offres d'emploi</a>
+	{% endif %}
+		
+			
+		</div>
 		<h4 class="mt-3">Company:</h4>
 		<p class="fs-5  text-capitalize">{{ job.company|raw }}</p>
 		<h4 class="mt-3">Location:</h4>
@@ -40,24 +53,23 @@
 		{% endif %}
 		{% if is_granted('ROLE_RECRUITER') %}
 		<div>
-		
-		<button class="btn btn-info fs-5 fw-bold mb-5">
+		{% if job.isApproved is same as false %}
+				<button class="btn btn-info fs-5 fw-bold mb-5">
 			<a href="{{ path('job.edit', {id: job.id}) }}" class="text-decoration-none text-light">Rédiger l'annonce</a>
 		</button>
-		</div>
-			<div>
-		<button class="btn btn-primary fs-5 fw-bold mb-5">
-			<a href="{{ path('job.annonces') }}" class="text-decoration-none text-light">Vers la liste de mes annonces</a>
-		</button>
+		{% endif %}
 		</div>
 		{% endif %}
 		<div>
-		<button class="btn btn-primary fs-5 fw-bold mb-5">
+		<button class="btn btn-primary fs-6 fw-bold mb-5">
 			<a href="{{ path('job.index') }}" class="text-decoration-none text-light">Vers la liste d'offres d'emploi</a>
 		</button>
-	
 		<br>
-		<br>
-
 	</div>
-</div></div></div></div>{% endblock %}
+</div></div></div>
+	<div class="text-center mb-4">
+		<button class="btn btn-info mb-4" type="button">
+			<a class="fs-5 text-light mb-4" href="#up" style="color: #d4c54c; text-decoration: none;">Ver le haut</a>
+			
+		</div><br>
+			<br></div>{% endblock %}

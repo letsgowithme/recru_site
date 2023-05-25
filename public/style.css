@@ -20,11 +20,20 @@ h5 {
   color: rgb(45, 44, 44);
   font-family: "Libre Baskerville", serif;
 }
+/* .page_title {
+  color: red;
+} */
 
 p,
 li {
   font-family: "Karla", sans-serif;
-  color: rgb(99, 97, 97);
+  
+}
+.cand_info {
+  color: rgb(61, 59, 59);
+}
+.apply_error {
+  color: red!important;
 }
 .hidden {
   display: none;
@@ -68,5 +77,6 @@ li {
     }
     .test {
       color: #ff8000;
+      color: #022a67;
     }
   } 

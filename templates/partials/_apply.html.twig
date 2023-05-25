@@ -7,10 +7,11 @@
 						{{ form_start(formApply) }}
 
 						{{ form_widget(formApply.content)  }}
-						<button class="btn bg-primary text-light mb-4" type="submit" id="button-addon2">
+						<button class="btn bg-primary text-light mb-4 fs-3 px-5" type="submit" id="button-addon2">
 							Postuler
 						</button>
-							<div style="position: absolute; background-color: #ff8000; top: 18%; padding: 15px; width: 75%;" class="apply_error">{{ form_errors(formApply) }}</div>
+							<div style="position: absolute; top: 15%; min-width: 80%; z-index: 2; color: red;" class="apply_error mt-sm-4">{{ form_errors(formApply) }}</div>
+
 						{{ form_end(formApply) }}
 
 					</div>
@@ -26,7 +27,7 @@
 		{% for apply in job.applies %}
 			{% if apply.isApproved %}
 
-				<li>
+				<li class="cand_info">
 					{{ apply.candidate.firstname}}
 					{{ apply.candidate.lastname}}
 					-
