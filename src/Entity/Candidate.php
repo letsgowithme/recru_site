@@ -48,25 +48,35 @@ class Candidate
     }
 
      /**
-     * Get the value of jobs
-     */ 
-    public function getJobs()
+     * @return Collection<int, Job>
+     */
+    public function getJobs(): Collection
     {
         return $this->jobs;
     }
 
-    /**
-     * Set the value of jobs
-     *
-     * @return  self
-     */ 
-    public function setJobs($jobs)
+    public function addJob(Job $job): self
     {
-        $this->jobs = $jobs;
+        if (!$this->jobs->contains($job)) {
+            $this->jobs->add($job);
+            $job->addCandidate($this);
+        }
 
         return $this;
     }
- 
+
+    public function removeJob(Job $job): self
+    {
+        if ($this->jobs->removeElement($job)) {
+            // set the owning side to null (unless already changed)
+            if ($job->getCandidates() === $this) {
+                $job->addCandidate(null);
+            }
+        }
+
+        return $this;
+    }
+  
     // public function __toString()
     // {
     //     return $this->lastname;

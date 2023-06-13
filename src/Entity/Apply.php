@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ApplyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Collection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[UniqueEntity(
@@ -40,12 +41,13 @@ class Apply
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private ?Job $job = null;
 
-    #[ORM\OneToOne(mappedBy: 'apply', cascade: ['persist', 'remove'])]
-    private ?Notification $notification = null;
+    // #[ORM\OneToMany(mappedBy: 'apply',targetEntity: Notification::class)]
+    // private Collection $notifications;
 
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
+        // $this->notifications = new ArrayCollection();
        
     }
 
@@ -135,6 +137,14 @@ class Apply
      */
     public function setCandidate($candidate)
     {
+        // if ($candidate === null && $this->candidate !== null) {
+        //     $this->candidate->setJobs(null);
+        // }
+
+        // set the owning side of the relation if necessary
+        // if ($candidate !== null && $candidate->getJobs() !== $this) {
+        //     $candidate->setJobs($this);
+        // }
         $this->candidate = $candidate;
 
         return $this;
@@ -152,25 +162,33 @@ class Apply
         return $this;
     }
 
-    public function getNotification(): ?Notification
-    {
-        return $this->notification;
-    }
+//   /**
+//      * @return Collection<int, Notification>
+//      */
+//     public function getNotifications(): Collection
+//     {
+//         return $this->notifications;
+//     }
 
-    public function setNotification(?Notification $notification): self
-    {
-        // unset the owning side of the relation if necessary
-        if ($notification === null && $this->notification !== null) {
-            $this->notification->setApply(null);
-        }
+//     public function addNotification(Notification $notification): self
+//     {
+//         if (!$this->notifications->contains($notification)) {
+//             $this->notifications->add($notification);
+//             $notification->setApply($this);
+//         }
 
-        // set the owning side of the relation if necessary
-        if ($notification !== null && $notification->getApply() !== $this) {
-            $notification->setApply($this);
-        }
+//         return $this;
+//     }
 
-        $this->notification = $notification;
+//     public function removeNotification(Notification $notification): self
+//     {
+//         if ($this->notifications->removeElement($notification)) {
+//             // set the owning side to null (unless already changed)
+//             if ($notification->getApply() === $this) {
+//                 $notification->setApply(null);
+//             }
+//         }
 
-        return $this;
-    }
+//         return $this;
+//     }
 }

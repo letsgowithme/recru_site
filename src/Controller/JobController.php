@@ -6,10 +6,7 @@ use App\Entity\Apply;
 use App\Entity\Job;
 use App\Form\ApplyType;
 use App\Form\JobType;
-use App\Repository\ApplyRepository;
 use App\Repository\JobRepository;
-use App\Service\SendCandidateInfoService;
-use App\Service\SendMailService;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Twig\Mime\NotificationEmail;
@@ -109,7 +106,7 @@ class JobController extends AbstractController
         ]);
     }
 
-  /**
+     /**
       * Show a job
       * @param Job $job
       * @param Request $request
@@ -122,7 +119,6 @@ class JobController extends AbstractController
           Job $job,
           Request $request,
           EntityManagerInterface $manager,
-          SendMailService $mail,
           MailerInterface $mailer
           
       ): Response {
@@ -130,18 +126,19 @@ class JobController extends AbstractController
 
         $apply = new Apply();
         $apply->setJob($job);
+        //  $apply->setCandidate($this->getUser()->getCandidate());
        
           if ($this->getUser()) {
-              $apply->setCandidate($this->getUser()->getCandidate())
-                    // ->setCandidate($this->getUser()->getLasttname())
-                    // ->setCandidate($this->getUser()->getEmail())
-                    // ->setCandidate($this->getUser()->getCvFilename())
+              $apply->setCandidate($this->getUser())
+        //             //  ->setCandidate($this->getUser()->getLasttname())
+        //             //  ->setCandidate($this->getUser()->getEmail())
+        //             //  ->setCandidate($this->getUser()->getCvFilename())
 
           ;
-          }
+        }
        
-           $emailRecru = $apply->getJob()->getAuthor()->getEmail();
-        //   $isApproved = $apply->getIsApproved(); 
+        $emailRecru = $apply->getJob()->getAuthor()->getEmail();
+        $isApproved = $apply->getIsApproved(); 
 
         $formApply = $this->createForm(ApplyType::class, $apply); 
         $formApply->handleRequest($request);
@@ -150,19 +147,30 @@ class JobController extends AbstractController
           /* form Apply */
   
           if ($formApply->isSubmitted() && $formApply->isValid()) {
+                 $apply->setCandidate($this->getUser())
+                       ->setJob($job)
+                    
             //   $apply = $formApply->getData();
+           
+               
+                      //  ->setCandidate($this->getUser()->getLasttname())
+                      //  ->setCandidate($this->getUser()->getEmail())
+                      //  ->setCandidate($this->getUser()->getCvFilename())
+  
+            ;
+            
               $manager->persist($apply);
               $manager->flush();
 
-            //    if($isApproved == true) {
-            //     $email = (new NotificationEmail())
-            //     ->from('no_reply_recru@recru.fr')
-            //     ->to($emailRecru)
-            //     ->subject(($apply->getCandidate()->getFirstname()))
-            //     ->html(($apply->getCandidate()->getCvFilename()));
+               if($isApproved == true) {
+                $email = (new NotificationEmail())
+                ->from('no_reply_recru@recru.fr')
+                ->to($emailRecru)
+                ->subject($apply->getContent())
+                ->html('emails/contact.html.twig');
     
-            // $mailer->send($email);
-            //  }
+            $mailer->send($email);
+              }
 
               $this->addFlash(
                   'success',

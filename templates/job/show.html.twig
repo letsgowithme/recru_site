@@ -10,7 +10,11 @@
 				{{ message }}
 			</div>
 		{% endfor %}
-
+{% for message in app.flashes('danger') %}
+<div class="alert alert-danger mt-4">
+{{ message }}
+</div>
+{% endfor %}
 	<div class="d-flex justify-content-between mt-5 mb-4" style="padding-top: 4%;">
 	<h1 class=" text-capitalize">{{ job.title }}</h1>
 	{% if is_granted('ROLE_RECRUITER') %}

@@ -13,23 +13,24 @@ class Notification
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(inversedBy: 'notification', cascade: ['persist', 'remove'])]
-    private ?Apply $apply = null;
+    // #[ORM\ManyToOne(inversedBy: 'notifications')]
+    // #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    // private ?Apply $apply = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getApply(): ?Apply
-    {
-        return $this->apply;
-    }
+    // public function getApply(): ?Apply
+    // {
+    //     return $this->apply;
+    // }
 
-    public function setApply(?Apply $apply): self
-    {
-        $this->apply = $apply;
+    // public function setApply(?Apply $apply): self
+    // {
+    //     $this->apply = $apply;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 }

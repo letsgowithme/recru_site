@@ -43,7 +43,8 @@ $mailService->sendEmail(
 $contact->getEmail(),
 $contact->getSubject(),
 'emails/contact.html.twig',
-['contact' => $contact]
+['contact' => $contact],
+$contact->setEmail($this->getUser()->getRecruiter()->getEmail()),
 );
 
 $this->addFlash(
