@@ -6,13 +6,19 @@ use App\Entity\Apply;
 use App\Entity\Job;
 use App\Form\ApplyType;
 use App\Form\JobType;
+use App\Repository\ApplyRepository;
 use App\Repository\JobRepository;
+use App\Service\SendCandidateInfoService;
+use App\Service\SendMailService;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Bridge\Twig\Mime\NotificationEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -116,26 +122,48 @@ class JobController extends AbstractController
           Job $job,
           Request $request,
           EntityManagerInterface $manager,
+          SendMailService $mail,
+          MailerInterface $mailer
+          
       ): Response {
         
 
         $apply = new Apply();
         $apply->setJob($job);
+       
           if ($this->getUser()) {
-              $apply->setCandidate($this->getUser());
+              $apply->setCandidate($this->getUser()->getCandidate())
+                    // ->setCandidate($this->getUser()->getLasttname())
+                    // ->setCandidate($this->getUser()->getEmail())
+                    // ->setCandidate($this->getUser()->getCvFilename())
+
+          ;
           }
-        $formApply = $this->createForm(ApplyType::class, $apply);
-          
+       
+           $emailRecru = $apply->getJob()->getAuthor()->getEmail();
+        //   $isApproved = $apply->getIsApproved(); 
+
+        $formApply = $this->createForm(ApplyType::class, $apply); 
         $formApply->handleRequest($request);
-          
         $error = $formApply->getErrors();
   
           /* form Apply */
   
           if ($formApply->isSubmitted() && $formApply->isValid()) {
-           
+            //   $apply = $formApply->getData();
               $manager->persist($apply);
               $manager->flush();
+
+            //    if($isApproved == true) {
+            //     $email = (new NotificationEmail())
+            //     ->from('no_reply_recru@recru.fr')
+            //     ->to($emailRecru)
+            //     ->subject(($apply->getCandidate()->getFirstname()))
+            //     ->html(($apply->getCandidate()->getCvFilename()));
+    
+            // $mailer->send($email);
+            //  }
+
               $this->addFlash(
                   'success',
                   'Vous avez postulé pour cette annonce'

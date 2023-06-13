@@ -53,7 +53,7 @@ class SecurityController extends AbstractController
         TokenGeneratorInterface $tokenGenerator,
         EntityManagerInterface $entityManager,
         SendMailService $mail
-    ): Response
+    ): Response  
     {
         $form = $this->createForm(ResetPasswordRequestFormType::class);
 
@@ -65,7 +65,7 @@ class SecurityController extends AbstractController
 
             // On vérifie si on a un utilisateur
             if($user){
-                // On génère un token de réinitialisation
+                // On génère un token de réinitialisation    
                 $token = $tokenGenerator->generateToken();
                 $user->setResetToken($token);
                 $entityManager->persist($user);

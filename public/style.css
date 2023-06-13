@@ -6,7 +6,7 @@ body {
   min-height: 100vh;
   justify-content: space-between;
   width: 100%;
-  /* background-color: rgb(73, 89, 93); */
+ 
 }
 .main-title {
   font-size: 4em;;
@@ -20,12 +20,10 @@ h5 {
   color: rgb(45, 44, 44);
   font-family: "Libre Baskerville", serif;
 }
-/* .page_title {
-  color: red;
-} */
 
 p,
-li {
+li,
+button {
   font-family: "Karla", sans-serif;
   
 }
@@ -46,10 +44,7 @@ li {
   top: 15%; 
   left: 20%;
 }
-/* .name_link {
-  margin-left: 130%;
-  transform: translateX(-20%);
-} */
+
 .truc {
   background-color: rgba(226, 226, 238, 0.921);
   color: rgb(47, 43, 43);
@@ -66,10 +61,7 @@ li {
 
 }
  @media screen and (min-width: 768px) {
-  /*.name_link {
-    margin-left: 35%;
-    transform: translateX(-10%);
-    */
+  
     .main-title {
       position: absolute; 
       top: 30%; 

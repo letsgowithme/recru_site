@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ApplyController!{% endblock %}
+
+{% block body %}
+
+<div class="container">
+<ol>
+{% for apply in applies %}
+<li class="d-flex">
+{{ apply.candidate.firstname }} - {{ apply.candidate.lastname }} - {{ apply.job }} - 
+
+<fieldset class="form-group">
+      <div class="form-check form-switch">
+      <label class="form-check-label" for="flexSwitchCheckDefault"> approuvé?</label>
+        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">{{ apply.isApproved }}
+        
+      </div>
+    </fieldset>
+
+   </li> 
+{% endfor %}
+</ol>
+</div>
+   
+{% endblock %}

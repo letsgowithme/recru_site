@@ -32,13 +32,16 @@ class Apply
     private \DateTimeImmutable $createdAt;
 
   
-    #[ORM\ManyToOne(inversedBy: "applies")]
+    #[ORM\ManyToOne(inversedBy: 'applies')]
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private ?User $candidate = null;
 
     #[ORM\ManyToOne(inversedBy: 'applies')]
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private ?Job $job = null;
+
+    #[ORM\OneToOne(mappedBy: 'apply', cascade: ['persist', 'remove'])]
+    private ?Notification $notification = null;
 
     public function __construct()
     {
@@ -145,6 +148,28 @@ class Apply
     public function setJob(?Job $job): self
     {
         $this->job = $job;
+
+        return $this;
+    }
+
+    public function getNotification(): ?Notification
+    {
+        return $this->notification;
+    }
+
+    public function setNotification(?Notification $notification): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($notification === null && $this->notification !== null) {
+            $this->notification->setApply(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($notification !== null && $notification->getApply() !== $this) {
+            $notification->setApply($this);
+        }
+
+        $this->notification = $notification;
 
         return $this;
     }
