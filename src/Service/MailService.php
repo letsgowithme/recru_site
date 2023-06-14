@@ -2,7 +2,8 @@
 
 namespace App\Service;
 
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Bridge\Twig\Mime\Email;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 
 class MailService
@@ -10,28 +11,22 @@ class MailService
     /**
      * @var MailerInterface
      */
-    private MailerInterface $mailer;
+   
 
-    public function __construct(MailerInterface $mailer)
+    public function __construct(private MailerInterface $mailer)
     {
         $this->mailer = $mailer;
     }
 
-    public function sendEmail(
-        string $from,
-        string $subject,
-        string $htmlTemplate,
-        array $context,
-        string $to
-        // string $to = 'admin@exemple.com'
-    ): void {
-        $email = (new TemplatedEmail())
-            ->from($from)
-            ->to($to)
-            ->subject($subject)
-            ->htmlTemplate($htmlTemplate)
-            ->context($context);
+    public function sendEmail(): Response
+    {
+            $email = (new Email())
+            ->from('recru_no_reply@recru.com')
+            ->to('admin@exemple.com')
+            ->subject('Info de candidat')
+            ->htmlTemplate('<p>C\'est une information</p>');
+            
 
         $this->mailer->send($email);
-    }
-} 
+    
+} }

@@ -4,15 +4,15 @@
 			{% if is_granted('ROLE_CANDIDATE') %}
 				<div class="apply__new">
 					<div class="w-full-width">
-						{{ form_start(formNotification) }}
+						{{ form_start(formNotifications) }}
 
-						{{ form_widget(formNotification.content)  }}
+						{{ form_widget(formNotifications.content)  }}
 						<button class="btn bg-primary text-light mb-4 fs-3 px-5" type="submit" id="button-addon2">
 							Postuler
 						</button>
 							<div style="position: absolute; top: 15%; min-width: 80%; z-index: 2; color: red;" class="apply_error mt-sm-4">{{ form_errors(formApply) }}</div>
 
-						{{ form_end(formNotification) }}
+						{{ form_end(formNotifications) }}
 
 					</div>
 				</div>

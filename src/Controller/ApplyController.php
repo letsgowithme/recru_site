@@ -3,14 +3,18 @@
 namespace App\Controller;
 
 use App\Entity\Apply;
-use Symfony\Bridge\Twig\Mime\NotificationEmail;
+// use Symfony\Bridge\Twig\Mime\NotificationEmail;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use App\Repository\ApplyRepository;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Notifier\Notification\Notification;
+use Symfony\Component\Notifier\NotifierInterface;
+use Symfony\Component\Notifier\Recipient\Recipient;
 use Symfony\Component\Routing\Annotation\Route;
+
 
 class ApplyController extends AbstractController
 {
@@ -18,7 +22,7 @@ class ApplyController extends AbstractController
     public function index(ApplyRepository $applyRepository,
     // $id,
     Apply $apply,
-    MailerInterface $mailer
+    NotifierInterface $notifier,
     ): Response
     {
        
@@ -26,13 +30,18 @@ class ApplyController extends AbstractController
         
         $emailRecru = $apply->getJob()->getAuthor()->getEmail();
         if($applies) {
-            $email = (new TemplatedEmail())
-            ->from('no_reply_recru@recru.fr')
-            ->to($emailRecru)
-            ->subject(($apply->getCandidate()->getFirstname()))
-            ->html(($apply->getCandidate()->getCvFilename()));
+            $notification = (new Notification('Nouveau cnadidat', ['email']))
+            ->content('Vous avez un canddat postulé pour votre annonce');
 
-        $mailer->send($email);
+             // The receiver of the Notification
+        $recipient = new Recipient(
+            $emailRecru
+            
+        );
+
+        // Send the notification to the recipient
+        $notifier->send($notification, $recipient);
+
         }
        
              

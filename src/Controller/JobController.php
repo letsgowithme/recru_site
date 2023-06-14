@@ -6,13 +6,17 @@ use App\Entity\Apply;
 use App\Entity\Job;
 use App\Form\ApplyType;
 use App\Form\JobType;
+use App\Repository\ApplyRepository;
 use App\Repository\JobRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use Symfony\Bridge\Twig\Mime\NotificationEmail;
+// use Symfony\Bridge\Twig\Mime\NotificationEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Notifier\Notification\Notification;
+use Symfony\Component\Notifier\NotifierInterface;
+use Symfony\Component\Notifier\Recipient\Recipient;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
@@ -119,15 +123,15 @@ class JobController extends AbstractController
           Job $job,
           Request $request,
           EntityManagerInterface $manager,
-          MailerInterface $mailer
+          NotifierInterface $notifier,
+          ApplyRepository $applyRepository
+          
           
       ): Response {
         
 
         $apply = new Apply();
-        $apply->setJob($job);
-        //  $apply->setCandidate($this->getUser()->getCandidate());
-       
+        $apply->setJob($job);       
           if ($this->getUser()) {
               $apply->setCandidate($this->getUser())
         //             //  ->setCandidate($this->getUser()->getLasttname())
@@ -137,9 +141,7 @@ class JobController extends AbstractController
           ;
         }
        
-        $emailRecru = $apply->getJob()->getAuthor()->getEmail();
-        $isApproved = $apply->getIsApproved(); 
-
+       
         $formApply = $this->createForm(ApplyType::class, $apply); 
         $formApply->handleRequest($request);
         $error = $formApply->getErrors();
@@ -149,28 +151,25 @@ class JobController extends AbstractController
           if ($formApply->isSubmitted() && $formApply->isValid()) {
                  $apply->setCandidate($this->getUser())
                        ->setJob($job)
-                    
-            //   $apply = $formApply->getData();
-           
-               
-                      //  ->setCandidate($this->getUser()->getLasttname())
-                      //  ->setCandidate($this->getUser()->getEmail())
-                      //  ->setCandidate($this->getUser()->getCvFilename())
-  
             ;
             
               $manager->persist($apply);
               $manager->flush();
-
-               if($isApproved == true) {
-                $email = (new NotificationEmail())
-                ->from('no_reply_recru@recru.fr')
-                ->to($emailRecru)
-                ->subject($apply->getContent())
-                ->html('emails/contact.html.twig');
+              $emailRecru = $apply->getJob()->getAuthor()->getEmail();
+              $applies = $applyRepository->findBy(['isApproved' => true]);
+      
+              if($applies) {
+                $notification = (new Notification('Nouveau cnadidat', ['email']))
+                ->content('Vous avez un canddat postulé pour votre annonce');
+                 // The receiver of the Notification
+            $recipient = new Recipient(
+                $emailRecru
+                
+            );
     
-            $mailer->send($email);
-              }
+            // Send the notification to the recipient
+            $notifier->send($notification, $recipient);
+            }
 
               $this->addFlash(
                   'success',

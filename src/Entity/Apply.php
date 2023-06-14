@@ -41,7 +41,7 @@ class Apply
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private ?Job $job = null;
 
-    // #[ORM\OneToMany(mappedBy: 'apply',targetEntity: Notification::class)]
+    // #[ORM\OneToMany(mappedBy: 'apply',targetEntity: Notifications::class)]
     // private Collection $notifications;
 
     public function __construct()
